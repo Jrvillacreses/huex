@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Identificación de color</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#EF233C",
+              "background-light": "#EDF2F4",
+              "background-dark": "#2B2D42",
+              "content-light": "#2B2D42",
+              "content-dark": "#EDF2F4",
+              "subtle-light": "#8D99AE",
+              "subtle-dark": "#8D99AE"
+            },
+            fontFamily: {
+              "display": ["Lexend", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-hidden group/design-root" style="max-width: 430px; margin: auto;">
+<!-- Camera Background View -->
+<div class="absolute inset-0 h-full w-full bg-cover bg-center" data-alt="A blurry, colorful abstract background representing a camera view focusing on a vibrant area." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC_pzZBO7CkJqsSLA-YXjHjYJoiNlXKk2I49uAoq9GNtOmYizj0ij8WhxFGWjnNOKC1lKsxieHHbdIM3rPAE-BPD541uQzSrj3NidOo5Iy3EQQ4_rGlbMG4yGU8QyG5pOdMO1SGzb2Fwlv0Ow3iNIB6TZN_nJNcPEj03fi8EfmyBw045bpGlOQMANHVN2gJTkrwFCBn90G7ppUIOPvugK22pT2AMiuo4A-ZcR2xhb_qK6KpCSxXEK6x7s2FGKvEX_LFPlfD-O1DCps');">
+<!-- Camera View Overlay -->
+<div class="absolute inset-0 bg-black/10"></div>
+</div>
+<!-- Main UI Layer -->
+<div class="relative z-10 flex h-[100dvh] w-full flex-col">
+<!-- Status Bar Placeholder -->
+<div class="h-10 w-full shrink-0"></div>
+<!-- Central Target Reticle -->
+<div class="flex-grow flex items-center justify-center">
+<div class="flex size-14 items-center justify-center rounded-full border-2 border-white bg-white/20 backdrop-blur-sm">
+<div class="size-2 rounded-full bg-primary"></div>
+</div>
+</div>
+<!-- Bottom Information and Control Panel -->
+<div class="flex w-full flex-col justify-end bg-background-light/80 dark:bg-background-dark/80 pt-4 backdrop-blur-lg" style="border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem;">
+<!-- HeadlineText -->
+<h1 class="text-content-light dark:text-content-dark tracking-light text-[32px] font-bold leading-tight px-6 text-center pb-3 pt-2">Rojo Intenso</h1>
+<!-- DescriptionList -->
+<div class="px-6 grid grid-cols-2">
+<div class="flex flex-col gap-1 border-t border-solid border-subtle-light/30 dark:border-subtle-dark/30 py-4 pr-3">
+<p class="text-subtle-light dark:text-subtle-dark text-sm font-normal leading-normal">HEX</p>
+<p class="text-content-light dark:text-content-dark text-base font-normal leading-normal">#EF233C</p>
+</div>
+<div class="flex flex-col gap-1 border-t border-solid border-subtle-light/30 dark:border-subtle-dark/30 py-4 pl-3">
+<p class="text-subtle-light dark:text-subtle-dark text-sm font-normal leading-normal">RGB</p>
+<p class="text-content-light dark:text-content-dark text-base font-normal leading-normal">239, 35, 60</p>
+</div>
+<div class="flex flex-col gap-1 border-t border-solid border-subtle-light/30 dark:border-subtle-dark/30 py-4 pr-3">
+<p class="text-subtle-light dark:text-subtle-dark text-sm font-normal leading-normal">CMYK</p>
+<p class="text-content-light dark:text-content-dark text-base font-normal leading-normal">0, 85, 75, 6</p>
+</div>
+<div class="flex flex-col gap-1 border-t border-solid border-subtle-light/30 dark:border-subtle-dark/30 py-4 pl-3">
+<p class="text-subtle-light dark:text-subtle-dark text-sm font-normal leading-normal">LAB</p>
+<p class="text-content-light dark:text-content-dark text-base font-normal leading-normal">51, 78, 59</p>
+</div>
+</div>
+<!-- ActionsBar -->
+<div class="py-4">
+<div class="@container">
+<div class="gap-4 px-6 grid-cols-[repeat(auto-fit,minmax(80px,_1fr))] grid">
+<div class="flex flex-col items-center gap-2 py-2.5 text-center">
+<button class="rounded-full bg-primary p-4">
+<span class="material-symbols-outlined text-content-dark text-2xl !text-white">volume_up</span>
+</button>
+<p class="text-content-light dark:text-content-dark text-sm font-medium leading-normal">Reproducir</p>
+</div>
+<div class="flex flex-col items-center gap-2 py-2.5 text-center">
+<button class="rounded-full bg-black/5 dark:bg-white/10 p-4">
+<span class="material-symbols-outlined text-content-light dark:text-content-dark text-2xl">bookmark</span>
+</button>
+<p class="text-content-light dark:text-content-dark text-sm font-medium leading-normal">Guardar</p>
+</div>
+<div class="flex flex-col items-center gap-2 py-2.5 text-center">
+<button class="rounded-full bg-black/5 dark:bg-white/10 p-4">
+<span class="material-symbols-outlined text-content-light dark:text-content-dark text-2xl">visibility</span>
+</button>
+<p class="text-content-light dark:text-content-dark text-sm font-medium leading-normal">Simulación</p>
+</div>
+</div>
+</div>
+</div>
+<!-- iOS Home Indicator -->
+<div class="pb-4 pt-2 flex justify-center">
+<div class="w-36 h-1.5 rounded-full bg-content-light dark:bg-content-dark"></div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

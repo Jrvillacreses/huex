@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HueX Mobile - Inicio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#EF233C",
+              "background-light": "#EDF2F4",
+              "background-dark": "#2B2D42",
+              "surface-light": "#FFFFFF",
+              "surface-dark": "#8D99AE",
+              "text-light": "#2B2D42",
+              "text-dark": "#EDF2F4",
+              "text-muted-light": "#8D99AE",
+              "text-muted-dark": "#D9E2EC"
+            },
+            fontFamily: {
+              "display": ["Lexend", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top App Bar -->
+<header class="flex h-16 shrink-0 items-center justify-between bg-background-light p-4 dark:bg-background-dark">
+<div class="w-12"></div>
+<h1 class="flex-1 text-center text-lg font-bold text-text-light dark:text-text-dark">Inicio</h1>
+<div class="flex w-12 items-center justify-end">
+<button class="flex h-12 w-12 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent text-text-light dark:text-text-dark">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</header>
+<main class="flex flex-col gap-6 p-4">
+<!-- Main Action Grid -->
+<section class="grid grid-cols-2 gap-4">
+<div class="flex flex-col gap-3 rounded-xl bg-surface-light p-4 shadow-sm dark:bg-surface-dark/20">
+<span class="material-symbols-outlined text-text-light dark:text-text-dark">photo_camera</span>
+<div class="flex flex-col">
+<h2 class="text-base font-bold text-text-light dark:text-text-dark">Escanear color</h2>
+<p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Usa tu cámara</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-xl bg-surface-light p-4 shadow-sm dark:bg-surface-dark/20">
+<span class="material-symbols-outlined text-text-light dark:text-text-dark">zoom_in</span>
+<div class="flex flex-col">
+<h2 class="text-base font-bold text-text-light dark:text-text-dark">Modo lupa</h2>
+<p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Amplía y detecta</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-xl bg-surface-light p-4 shadow-sm dark:bg-surface-dark/20">
+<span class="material-symbols-outlined text-text-light dark:text-text-dark">visibility</span>
+<div class="flex flex-col">
+<h2 class="text-base font-bold text-text-light dark:text-text-dark">Simulador</h2>
+<p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Tipos de visión</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-xl bg-surface-light p-4 shadow-sm dark:bg-surface-dark/20">
+<span class="material-symbols-outlined text-text-light dark:text-text-dark">star</span>
+<div class="flex flex-col">
+<h2 class="text-base font-bold text-text-light dark:text-text-dark">Favoritos</h2>
+<p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Colores guardados</p>
+</div>
+</div>
+</section>
+<!-- Quick Tips Card -->
+<section class="flex flex-col items-stretch justify-start rounded-xl bg-surface-light shadow-sm dark:bg-surface-dark/20 @container">
+<div class="aspect-video w-full rounded-t-xl bg-cover bg-center bg-no-repeat" data-alt="Abstract image with colorful geometric shapes overlapping" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDeb8qX6HbPloOSd4DRvOBLmDTlPaZvDsW8Ty_y6EPl87Llw9IbhLR93jcG35v7B1C9dOw506ckVRHfz4lP2I9yFSvbwJm_2m7B9pvhg-RZQYm0HpNhnXVw8_tbBpkXaPpAQPMIQJJ8O9ioXV3TP_cp62s1faoaL-2pz-QpCNh0mGP-pr6lLXVfyttNm-UnkFpMDLvZYSChx5s6N7U-XRrVA5tzgTjdi7HuYdfk0KlfMVvwtb2wnR4dvpMAby5VV1SZwbfFAoMQCiU");'></div>
+<div class="flex w-full min-w-72 grow flex-col items-stretch justify-center gap-1 p-4">
+<p class="text-sm font-medium text-primary dark:text-primary">Consejo del día</p>
+<p class="text-lg font-bold text-text-light dark:text-text-dark">¿Sabías que...?</p>
+<p class="text-base font-normal text-text-muted-light dark:text-text-muted-dark">
+                        Puedes usar el modo lupa para identificar colores en textos pequeños o áreas específicas con mayor precisión.
+                    </p>
+</div>
+</section>
+<!-- Theme Toggle -->
+<div class="flex min-h-14 items-center justify-between gap-4 rounded-xl bg-surface-light p-4 shadow-sm dark:bg-surface-dark/20">
+<div class="flex items-center gap-4">
+<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-background-light text-text-light dark:bg-background-dark dark:text-text-dark">
+<span class="material-symbols-outlined">contrast</span>
+</div>
+<p class="flex-1 truncate text-base font-normal text-text-light dark:text-text-dark">Modo Oscuro</p>
+</div>
+<div class="shrink-0">
+<label class="relative flex h-[31px] w-[51px] cursor-pointer items-center rounded-full bg-surface-dark/20 p-0.5 has-[:checked]:bg-primary dark:bg-background-dark">
+<div class="h-full w-[27px] rounded-full bg-white transition-transform duration-300 ease-in-out" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;"></div>
+<input checked="" class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+</main>
+<div class="flex-grow"></div> <!-- Spacer to push nav bar to the bottom -->
+<!-- Bottom Navigation Bar -->
+<nav class="sticky bottom-0 flex gap-2 border-t border-surface-dark/20 bg-background-light/80 px-4 pb-3 pt-2 backdrop-blur-sm dark:border-surface-dark/30 dark:bg-background-dark/80">
+<a class="flex flex-1 flex-col items-center justify-end gap-1 rounded-full text-primary" href="#">
+<span class="material-symbols-outlined fill">home</span>
+<p class="text-xs font-medium text-primary">Inicio</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-text-muted-light dark:text-text-muted-dark" href="#">
+<span class="material-symbols-outlined">star</span>
+<p class="text-xs font-medium">Favoritos</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-text-muted-light dark:text-text-muted-dark" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-xs font-medium">Ajustes</p>
+</a>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lupa Accesible</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#EF233C",
+            "background-light": "#EDF2F4",
+            "background-dark": "#2B2D42",
+            "inactive": "#8D99AE",
+            "text-light": "#EDF2F4"
+          },
+          fontFamily: {
+            "display": ["Lexend", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24
+    }
+    .material-symbols-outlined.fill {
+        font-variation-settings: 'FILL' 1;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark font-display">
+<div class="relative flex h-screen w-full flex-col bg-background-dark dark group/design-root overflow-hidden">
+<!-- Camera View Background -->
+<div class="absolute inset-0 h-full w-full">
+<img class="h-full w-full object-cover" data-alt="Abstract colorful painting with vibrant swirls and textures to simulate a camera view." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzmLmZ4wXiuKae_UW93DTO6OQnqmJlsPCNytWZd-uCAnGNcVsuOm6uV4cKPMvwDHb2kuIak0A6oqna_n9kj7Ii0zZKhpCWtEKkrInjYPDEmjJz3EaFf1U4llQQuTGmMy5Xzyuw-B11LiIxVanxqwj5r4eT8fvdQGvY3I4Pw0jlZUJREaYXcYkAgWOPv5x-ERlgk3e7tfkpdHJWfpzlBkzxYrdopCFu-0vC4xxB1B1XqqGvrk4X6MeXCu9lBrO2G2tz4ovAKJspETM"/>
+<div class="absolute inset-0 bg-black/10"></div>
+</div>
+<!-- Main UI -->
+<div class="relative z-10 flex h-full flex-col justify-between">
+<!-- TopAppBar -->
+<header class="flex items-center bg-transparent p-4 justify-between">
+<button class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-background-dark/50 text-text-light backdrop-blur-sm">
+<span class="material-symbols-outlined">flashlight_on</span>
+</button>
+<button class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-background-dark/50 text-text-light backdrop-blur-sm">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</header>
+<!-- Color Identification Overlay -->
+<div class="flex-grow flex items-center justify-center">
+<div class="flex flex-col items-center space-y-3">
+<!-- Crosshair -->
+<div class="relative h-8 w-8">
+<div class="absolute left-1/2 top-0 h-2 w-px -translate-x-1/2 bg-text-light"></div>
+<div class="absolute left-1/2 bottom-0 h-2 w-px -translate-x-1/2 bg-text-light"></div>
+<div class="absolute top-1/2 left-0 h-px w-2 -translate-y-1/2 bg-text-light"></div>
+<div class="absolute top-1/2 right-0 h-px w-2 -translate-y-1/2 bg-text-light"></div>
+<div class="h-full w-full rounded-full border border-text-light"></div>
+</div>
+<!-- Color Tag -->
+<div class="rounded-lg bg-background-dark/60 px-4 py-2 text-center text-text-light backdrop-blur-sm shadow-lg">
+<p class="font-medium">Rojo Intenso</p>
+<p class="text-sm text-inactive">#EF233C</p>
+</div>
+</div>
+</div>
+<!-- Bottom Controls -->
+<footer class="flex flex-col items-center gap-6 p-4 pb-8">
+<!-- Slider -->
+<div class="@container w-full max-w-sm">
+<div class="relative flex w-full flex-col items-center justify-between gap-3 rounded-xl bg-background-dark/50 p-4 backdrop-blur-sm">
+<div class="flex w-full shrink-[3] items-center justify-between">
+<p class="text-base font-medium leading-normal text-text-light">Zoom</p>
+<p class="text-sm font-semibold leading-normal text-text-light">3.5x</p>
+</div>
+<div class="flex h-4 w-full items-center gap-4">
+<div class="flex h-1.5 flex-1 rounded-full bg-inactive/50">
+<div class="h-full w-[28%] rounded-full bg-primary"></div>
+<div class="relative">
+<div class="absolute -left-2.5 -top-2.5 size-6 rounded-full border-4 border-background-dark bg-primary shadow-lg"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- CameraControl -->
+<div class="flex items-center justify-center">
+<button class="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-transparent">
+<div class="h-[72px] w-[72px] rounded-full bg-primary ring-4 ring-text-light ring-offset-4 ring-offset-black/20"></div>
+</button>
+</div>
+</footer>
+</div>
+</div>
+</body></html>

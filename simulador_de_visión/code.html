@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Simulador de visión</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#EF233C",
+            "background-light": "#EDF2F4",
+            "background-dark": "#2B2D42",
+            "foreground-light": "#2B2D42",
+            "foreground-dark": "#EDF2F4",
+            "subtle-light": "#8D99AE",
+            "subtle-dark": "#8D99AE",
+            "card-light": "#ffffff",
+            "card-dark": "#363952",
+          },
+          fontFamily: {
+            "display": ["Lexend", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.5rem",
+            "lg": "0.75rem",
+            "xl": "1rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<header class="flex h-14 items-center justify-between px-4">
+<div class="flex size-10 items-center justify-center">
+<span class="material-symbols-outlined text-foreground-light dark:text-foreground-dark">arrow_back_ios_new</span>
+</div>
+<h1 class="text-lg font-bold text-foreground-light dark:text-foreground-dark">Simulador de Visión</h1>
+<div class="flex size-10 items-center justify-center">
+<span class="material-symbols-outlined text-foreground-light dark:text-foreground-dark">help_outline</span>
+</div>
+</header>
+<main class="flex flex-1 flex-col justify-between p-4 pt-0">
+<div class="flex flex-1 flex-col items-center justify-center gap-4">
+<div class="flex w-full max-w-md flex-1 flex-col items-center justify-center rounded-xl bg-card-light dark:bg-card-dark shadow-sm">
+<div class="flex flex-col items-center gap-4 p-6 text-center">
+<div class="flex size-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-4xl">visibility</span>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-lg font-bold text-foreground-light dark:text-foreground-dark">Abre la cámara o sube una imagen</p>
+<p class="text-sm text-subtle-light dark:text-subtle-dark">Selecciona una opción para empezar a simular diferentes tipos de visión.</p>
+</div>
+</div>
+</div>
+<div class="flex w-full max-w-md gap-4">
+<button class="flex h-14 flex-1 cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded-xl bg-card-light dark:bg-card-dark text-foreground-light dark:text-foreground-dark shadow-sm">
+<span class="material-symbols-outlined">photo_library</span>
+<span class="text-xs font-medium">Galería</span>
+</button>
+<button class="flex h-14 flex-1 cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded-xl bg-card-light dark:bg-card-dark text-foreground-light dark:text-foreground-dark shadow-sm">
+<span class="material-symbols-outlined">photo_camera</span>
+<span class="text-xs font-medium">Cámara</span>
+</button>
+</div>
+</div>
+<div class="mt-6 flex flex-col items-center gap-4">
+<div class="flex w-full max-w-md flex-col items-center justify-center rounded-xl bg-card-light dark:bg-card-dark p-2 shadow-sm">
+<div class="flex h-10 w-full items-center justify-center p-1">
+<label class="flex h-full flex-1 cursor-pointer items-center justify-center overflow-hidden rounded-lg px-2 text-sm font-medium leading-normal text-subtle-light dark:text-subtle-dark has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:shadow-md">
+<span class="truncate">Normal</span>
+<input checked="" class="invisible w-0" name="vision-mode" type="radio" value="Normal"/>
+</label>
+<label class="flex h-full flex-1 cursor-pointer items-center justify-center overflow-hidden rounded-lg px-2 text-sm font-medium leading-normal text-subtle-light dark:text-subtle-dark has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:shadow-md">
+<span class="truncate">Protanopia</span>
+<input class="invisible w-0" name="vision-mode" type="radio" value="Protanopia"/>
+</label>
+<label class="flex h-full flex-1 cursor-pointer items-center justify-center overflow-hidden rounded-lg px-2 text-sm font-medium leading-normal text-subtle-light dark:text-subtle-dark has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:shadow-md">
+<span class="truncate">Deuteranopia</span>
+<input class="invisible w-0" name="vision-mode" type="radio" value="Deuteranopia"/>
+</label>
+<label class="flex h-full flex-1 cursor-pointer items-center justify-center overflow-hidden rounded-lg px-2 text-sm font-medium leading-normal text-subtle-light dark:text-subtle-dark has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:shadow-md">
+<span class="truncate">Tritanopia</span>
+<input class="invisible w-0" name="vision-mode" type="radio" value="Tritanopia"/>
+</label>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

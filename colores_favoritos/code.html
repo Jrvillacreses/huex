@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Colores Favoritos</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#ef233c",
+              "background-light": "#edf2f4",
+              "background-dark": "#2b2d42",
+              "text-light-primary": "#2b2d42",
+              "text-dark-primary": "#edf2f4",
+              "text-light-secondary": "#8d99ae",
+              "text-dark-secondary": "#8d99ae",
+              "card-light": "#ffffff",
+              "card-dark": "#3a3d57",
+            },
+            fontFamily: {
+              "display": ["Lexend", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<!-- Top App Bar -->
+<header class="flex items-center p-4 pb-2 justify-between sticky top-0 z-10 bg-background-light dark:bg-background-dark border-b border-gray-200/50 dark:border-white/10">
+<div class="flex size-10 shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-text-light-primary dark:text-text-dark-primary text-2xl">arrow_back_ios_new</span>
+</div>
+<h1 class="text-text-light-primary dark:text-text-dark-primary text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Colores Favoritos</h1>
+<div class="flex size-10 shrink-0 items-center"></div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow px-4 pt-6 pb-24">
+<div class="flex flex-col gap-3">
+<!-- List Item 1 -->
+<div class="flex items-center gap-4 bg-card-light dark:bg-card-dark p-4 min-h-[72px] justify-between rounded-lg shadow-sm">
+<div class="flex items-center gap-4 flex-grow">
+<div class="rounded-full size-12 flex-shrink-0" data-alt="Color swatch for Intense Red" style="background-color: #EF233C;"></div>
+<div class="flex flex-col justify-center">
+<p class="text-text-light-primary dark:text-text-dark-primary text-base font-medium leading-normal line-clamp-1">Rojo Intenso</p>
+<p class="text-text-light-secondary dark:text-text-dark-secondary text-sm font-normal leading-normal line-clamp-2">Guardado el 15/07/2024</p>
+</div>
+</div>
+<div class="shrink-0">
+<span class="material-symbols-outlined text-text-light-secondary dark:text-text-dark-secondary text-2xl">chevron_right</span>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="flex items-center gap-4 bg-card-light dark:bg-card-dark p-4 min-h-[72px] justify-between rounded-lg shadow-sm">
+<div class="flex items-center gap-4 flex-grow">
+<div class="rounded-full size-12 flex-shrink-0" data-alt="Color swatch for Forest Green" style="background-color: #81b29a;"></div>
+<div class="flex flex-col justify-center">
+<p class="text-text-light-primary dark:text-text-dark-primary text-base font-medium leading-normal line-clamp-1">Verde Bosque</p>
+<p class="text-text-light-secondary dark:text-text-dark-secondary text-sm font-normal leading-normal line-clamp-2">Guardado el 12/07/2024</p>
+</div>
+</div>
+<div class="shrink-0">
+<span class="material-symbols-outlined text-text-light-secondary dark:text-text-dark-secondary text-2xl">chevron_right</span>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="flex items-center gap-4 bg-card-light dark:bg-card-dark p-4 min-h-[72px] justify-between rounded-lg shadow-sm">
+<div class="flex items-center gap-4 flex-grow">
+<div class="rounded-full size-12 flex-shrink-0" data-alt="Color swatch for Sun Yellow" style="background-color: #f2cc8f;"></div>
+<div class="flex flex-col justify-center">
+<p class="text-text-light-primary dark:text-text-dark-primary text-base font-medium leading-normal line-clamp-1">Amarillo Sol</p>
+<p class="text-text-light-secondary dark:text-text-dark-secondary text-sm font-normal leading-normal line-clamp-2">Guardado el 10/07/2024</p>
+</div>
+</div>
+<div class="shrink-0">
+<span class="material-symbols-outlined text-text-light-secondary dark:text-text-dark-secondary text-2xl">chevron_right</span>
+</div>
+</div>
+<!-- List Item 4 -->
+<div class="flex items-center gap-4 bg-card-light dark:bg-card-dark p-4 min-h-[72px] justify-between rounded-lg shadow-sm">
+<div class="flex items-center gap-4 flex-grow">
+<div class="rounded-full size-12 flex-shrink-0" data-alt="Color swatch for Deep Blue" style="background-color: #6a7fdb;"></div>
+<div class="flex flex-col justify-center">
+<p class="text-text-light-primary dark:text-text-dark-primary text-base font-medium leading-normal line-clamp-1">Azul Profundo</p>
+<p class="text-text-light-secondary dark:text-text-dark-secondary text-sm font-normal leading-normal line-clamp-2">Guardado el 08/07/2024</p>
+</div>
+</div>
+<div class="shrink-0">
+<span class="material-symbols-outlined text-text-light-secondary dark:text-text-dark-secondary text-2xl">chevron_right</span>
+</div>
+</div>
+<!-- Empty State Example (Commented out, can be used if list is empty) -->
+<!-- 
+                <div class="flex flex-col items-center justify-center text-center mt-20 p-8">
+                    <span class="material-symbols-outlined text-text-light-secondary dark:text-text-dark-secondary text-6xl mb-4">palette</span>
+                    <h2 class="text-text-light-primary dark:text-text-dark-primary text-xl font-bold mb-2">Sin colores guardados</h2>
+                    <p class="text-text-light-secondary dark:text-text-dark-secondary max-w-xs">Aún no has guardado colores. ¡Toca el botón + para empezar!</p>
+                </div>
+                -->
+</div>
+</main>
+<!-- Floating Action Button -->
+<div class="fixed bottom-6 right-6">
+<button aria-label="Añadir nuevo color" class="bg-primary rounded-full size-14 flex items-center justify-center shadow-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark">
+<span class="material-symbols-outlined text-white text-3xl">add</span>
+</button>
+</div>
+</div>
+</body></html>
