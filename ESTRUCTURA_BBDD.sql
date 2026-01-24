@@ -1,0 +1,140 @@
+-- Documento de Estructura de Base de Datos - HueX Mobile (Completa y Segura)
+-- Dialecto: SQL Estándar (Estilo Oracle/PLSQL para compatibilidad empresarial)
+-- Esta estructura cubre: Gestión de Usuarios, RBAC (Roles), Seguridad (Sesiones/Logs), 
+-- Catálogo de Colores, Favoritos y Configuración de Accesibilidad.
+
+-- ==========================================
+-- 1. CONTROL DE ACCESO (Roles y Permisos)
+-- ==========================================
+
+CREATE TABLE ROL(
+    ID_ROL NUMBER,
+    NOMBRE_ROL VARCHAR2(20), -- 'ADMIN', 'USUARIO'
+    DESCRIPCION VARCHAR2(100),
+    CONSTRAINT PK_ROL PRIMARY KEY (ID_ROL),
+    CONSTRAINT UQ_NOMBRE_ROL UNIQUE (NOMBRE_ROL),
+    CONSTRAINT NN_NOMBRE_ROL CHECK (NOMBRE_ROL IS NOT NULL)
+);
+
+-- ==========================================
+-- 2. GESTIÓN DE USUARIOS
+-- ==========================================
+
+CREATE TABLE USUARIO(
+    ID_USUARIO NUMBER,
+    ID_ROL NUMBER DEFAULT 2, -- Por defecto 'USUARIO'
+    NOMBRE_COMPLETO VARCHAR2(100),
+    NOMBRE_USUARIO VARCHAR2(50),
+    EMAIL VARCHAR2(100),
+    PASSWORD_HASH VARCHAR2(255), -- Almacenamiento seguro (Bcrypt/Argon2)
+    ESTADO_CUENTA CHAR(1) DEFAULT 'A', -- 'A': Activo, 'B': Bloqueado, 'I': Inactivo
+    INTENTOS_FALLIDOS NUMBER(1) DEFAULT 0, -- Para bloqueo automático de seguridad
+    FECHA_REGISTRO DATE DEFAULT SYSDATE,
+    ULTIMO_ACCESO DATE,
+    CONSTRAINT PK_USUARIO PRIMARY KEY (ID_USUARIO),
+    CONSTRAINT FK_USUARIO_ROL FOREIGN KEY (ID_ROL) REFERENCES ROL (ID_ROL),
+    CONSTRAINT UQ_USUARIO_EMAIL UNIQUE (EMAIL),
+    CONSTRAINT NN_USUARIO_EMAIL CHECK (EMAIL IS NOT NULL),
+    CONSTRAINT NN_USUARIO_PASS CHECK (PASSWORD_HASH IS NOT NULL),
+    CONSTRAINT CK_ESTADO_CUENTA CHECK (ESTADO_CUENTA IN ('A', 'B', 'I'))
+);
+
+-- ==========================================
+-- 3. SEGURIDAD AVANZADA (Sesiones y Auditoría)
+-- ==========================================
+
+-- Tabla para gestionar Refresh Tokens y Sesiones Activas (Revocación segura)
+CREATE TABLE SESION_ACTIVA(
+    ID_SESION NUMBER,
+    ID_USUARIO NUMBER,
+    TOKEN_REFRESH_HASH VARCHAR2(255), -- Hash del token para validación
+    DISPOSITIVO VARCHAR2(100), -- User Agent o nombre del móvil
+    DIRECCION_IP VARCHAR2(45),
+    FECHA_CREACION DATE DEFAULT SYSDATE,
+    FECHA_EXPIRACION DATE,
+    ES_VALIDO CHAR(1) DEFAULT 'Y', -- 'Y'/'N' Para revocación forzada
+    CONSTRAINT PK_SESION PRIMARY KEY (ID_SESION),
+    CONSTRAINT FK_SESION_USUARIO FOREIGN KEY (ID_USUARIO) REFERENCES USUARIO (ID_USUARIO) ON DELETE CASCADE,
+    CONSTRAINT CK_SESION_VALIDA CHECK (ES_VALIDO IN ('Y', 'N'))
+);
+
+-- Tabla de Auditoría para registrar eventos críticos (Login fallido, cambios de pass)
+CREATE TABLE LOG_SEGURIDAD(
+    ID_LOG NUMBER,
+    ID_USUARIO NUMBER, -- Puede ser NULL si es un intento de login desconocido
+    TIPO_EVENTO VARCHAR2(50), -- 'LOGIN_EXITO', 'LOGIN_FALLIDO', 'CAMBIO_CLAVE'
+    DESCRIPCION VARCHAR2(255),
+    DIRECCION_IP VARCHAR2(45),
+    FECHA_EVENTO DATE DEFAULT SYSDATE,
+    CONSTRAINT PK_LOG_SEGURIDAD PRIMARY KEY (ID_LOG),
+    CONSTRAINT FK_LOG_USUARIO FOREIGN KEY (ID_USUARIO) REFERENCES USUARIO (ID_USUARIO)
+);
+
+-- ==========================================
+-- 4. DOMINIO DE LA APLICACIÓN (Colores y Visión)
+-- ==========================================
+
+-- Catálogo Maestro de Colores para identificación
+CREATE TABLE COLOR_CATALOGO(
+    ID_COLOR NUMBER,
+    NOMBRE_COLOR VARCHAR2(50),
+    CODIGO_HEX VARCHAR2(7),   -- '#FF0000'
+    CODIGO_RGB VARCHAR2(15),  -- '255,0,0' - Clave para búsqueda
+    FAMILIA_COLOR VARCHAR2(30), -- 'Rojos', 'Azules', etc.
+    CONSTRAINT PK_COLOR_CATALOGO PRIMARY KEY (ID_COLOR),
+    CONSTRAINT UQ_COLOR_HEX UNIQUE (CODIGO_HEX),
+    CONSTRAINT NN_COLOR_RGB CHECK (CODIGO_RGB IS NOT NULL),
+    CONSTRAINT NN_COLOR_NOMBRE CHECK (NOMBRE_COLOR IS NOT NULL)
+);
+
+-- Tipos de Daltonismo para configuración
+CREATE TABLE TIPO_DALTONISMO(
+    ID_TIPO NUMBER,
+    NOMBRE_TECNICO VARCHAR2(30), -- 'Protanopia', 'Deuteranopia', 'Tritanopia'
+    NOMBRE_COMUN VARCHAR2(50), -- 'Ceguera al rojo', etc.
+    FILTRO_SVG_ID VARCHAR2(50), -- Referencia al filtro en frontend
+    CONSTRAINT PK_TIPO_DALTONISMO PRIMARY KEY (ID_TIPO)
+);
+
+-- Configuración del Perfil de Usuario
+CREATE TABLE PERFIL_VISUAL_USUARIO(
+    ID_PERFIL NUMBER,
+    ID_USUARIO NUMBER,
+    ID_TIPO_DALTONISMO NUMBER, -- Visión del usuario
+    USAR_MODO_ALTO_CONTRASTE CHAR(1) DEFAULT 'N',
+    TAMAÑO_FUENTE_PREF NUMBER(2) DEFAULT 14,
+    CONSTRAINT PK_PERFIL_VISUAL PRIMARY KEY (ID_PERFIL),
+    CONSTRAINT FK_PERFIL_USUARIO FOREIGN KEY (ID_USUARIO) REFERENCES USUARIO (ID_USUARIO) ON DELETE CASCADE,
+    CONSTRAINT FK_PERFIL_TIPO FOREIGN KEY (ID_TIPO_DALTONISMO) REFERENCES TIPO_DALTONISMO (ID_TIPO),
+    CONSTRAINT UQ_PERFIL_USUARIO UNIQUE (ID_USUARIO), -- 1 perfil por usuario
+    CONSTRAINT CK_ALTO_CONTRASTE CHECK (USAR_MODO_ALTO_CONTRASTE IN ('Y', 'N'))
+);
+
+-- ==========================================
+-- 5. FUNCIONALIDAD PRINCIPAL (Favoritos e Historial)
+-- ==========================================
+
+CREATE TABLE FAVORITO(
+    ID_FAVORITO NUMBER,
+    ID_USUARIO NUMBER,
+    ID_COLOR_DETECTADO NUMBER, -- Enlace al catálogo si hubo coincidencia exacta
+    CODIGO_HEX_ESCANEO VARCHAR2(7), -- Lo que vio la cámara exactamente
+    CODIGO_RGB_ESCANEO VARCHAR2(15),
+    NOMBRE_PERSONALIZADO VARCHAR2(50), -- Si el usuario le da su propio nombre
+    ETIQUETA_LUGAR VARCHAR2(50), -- 'Casa', 'Tienda', 'Trabajo'
+    FECHA_GUARDADO DATE DEFAULT SYSDATE,
+    CONSTRAINT PK_FAVORITO PRIMARY KEY (ID_FAVORITO),
+    CONSTRAINT FK_FAV_USUARIO FOREIGN KEY (ID_USUARIO) REFERENCES USUARIO (ID_USUARIO) ON DELETE CASCADE,
+    CONSTRAINT FK_FAV_CATALOGO FOREIGN KEY (ID_COLOR_DETECTADO) REFERENCES COLOR_CATALOGO (ID_COLOR),
+    CONSTRAINT NN_FAV_HEX CHECK (CODIGO_HEX_ESCANEO IS NOT NULL)
+);
+
+-- (Opcional) Historial de todos los escaneos recientes
+CREATE TABLE HISTORIAL_ESCANEO(
+    ID_HST NUMBER,
+    ID_USUARIO NUMBER,
+    CODIGO_HEX VARCHAR2(7),
+    FECHA_ESCANEO DATE DEFAULT SYSDATE,
+    CONSTRAINT PK_HISTORIAL PRIMARY KEY (ID_HST),
+    CONSTRAINT FK_HST_USUARIO FOREIGN KEY (ID_USUARIO) REFERENCES USUARIO (ID_USUARIO) ON DELETE CASCADE
+);

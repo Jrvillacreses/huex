@@ -1,0 +1,111 @@
+GUÍA DE USUARIO - HUEX MOBILE
+=====================================
+Bienvenido a HueX, tu asistente personal de visión y color.
+
+Esta guía está diseñada para ayudarte a sacar el máximo provecho de la aplicación, paso a paso, incluso si es tu primera vez usándola.
+
+-----------------------------------------------------------------------
+ÍNDICE
+1. Introducción: ¿Qué es HueX?
+2. Primeros Pasos: Crear Cuenta e Iniciar Sesión
+3. Cómo Identificar un Color (Escaner)
+4. Guardar tus Colores Favoritos
+5. Usar el Simulador de Visión
+6. Configurar tu Perfil (Accesibilidad)
+7. Preguntas Frecuentes
+-----------------------------------------------------------------------
+
+1. INTRODUCCIÓN: ¿QUÉ ES HUEX?
+HueX es una aplicación diseñada para ayudar a personas con daltonismo o deficiencias visuales a identificar colores con precisión en su entorno. También permite a personas con visión normal "simular" cómo ve el mundo alguien con daltonismo.
+
+-----------------------------------------------------------------------
+
+2. PRIMEROS PASOS: CREAR CUENTA E INICIAR SESIÓN
+
+Para guardar tus preferencias y colores favoritos, necesitas una cuenta.
+
+A. REGISTRO (Si eres nuevo)
+   1. Al abrir la app, verás la pantalla de bienvenida. Toca el botón "Registrarse" o "Crear Cuenta".
+   2. Introduce tu Nombre Completo.
+   3. Escribe tu Correo Electrónico (será tu usuario).
+   4. Crea una contraseña segura.
+   5. Toca "Confirmar". ¡Listo! Ya tienes cuenta.
+
+B. INICIAR SESIÓN (Si ya tienes cuenta)
+   1. En la pantalla principal, toca "Iniciar Sesión".
+   2. Ingresa tu correo y contraseña.
+   3. Si es tu dispositivo personal, la sesión se mantendrá abierta para que no tengas que ingresar tus datos cada vez.
+
+-----------------------------------------------------------------------
+
+3. CÓMO IDENTIFICAR UN COLOR (ESCANER)
+
+Esta es la función principal. Usa la cámara de tu teléfono para saber qué color estás viendo.
+
+PASO A PASO:
+1. Toca el botón grande central o el icono de "Cámara/Escaner" en el menú inferior.
+2. Apunta con tu cámara al objeto que quieres identificar (una camisa, una pared, una fruta).
+3. Intenta que el objeto esté bien iluminado.
+4. En la pantalla verás un cuadro central (punto de mira). Coloca el objeto dentro de ese cuadro.
+5. La aplicación te mostrará en tiempo real:
+   - El NOMBRE del color (ej. "Rojo Fuego", "Azul Marino").
+   - El código técnico (HEX) para referencia.
+6. Si quieres capturar ese momento, toca el botón de "Círculo" (como tomar una foto) para congelar la imagen y ver los detalles.
+
+-----------------------------------------------------------------------
+
+4. GUARDAR TUS COLORES FAVORITOS
+
+¿Encontraste un color de pintura que te gusta o necesitas recordar el color exacto de una prenda?
+
+1. Una vez que hayas escaneado un color (siguiendo el paso anterior):
+2. Verás un botón con forma de "Corazón" o que dice "Guardar en Favoritos". Tócalo.
+3. Se abrirá una pequeña ventana donde puedes:
+   - Ponerle un nombre personalizado (ej. "Paled de mi habitación").
+   - Añadir una etiqueta de lugar (ej. "Casa").
+   - Escribir una nota personal.
+4. Toca "Guardar".
+
+VER TUS FAVORITOS:
+- En el menú principal, toca el icono de "Corazón" o "Favoritos".
+- Verás la lista de todos tus colores guardados. Si tocas uno, verás toda la información detallada.
+
+-----------------------------------------------------------------------
+
+5. USAR EL SIMULADOR DE VISIÓN
+
+Esta herramienta permite ver el mundo a través de "filtros" que simulan diferentes tipos de daltonismo. Útil para diseñadores o familiares.
+
+1. Ve al menú y selecciona "Simulador".
+2. Se activará la cámara.
+3. En la parte inferior, verás opciones como:
+   - "Normal" (Sin filtro).
+   - "Protanopia" (Dificultad con rojo).
+   - "Deuteranopia" (Dificultad con verde).
+   - "Tritanopia" (Dificultad con azul).
+4. Toca cualquiera de ellos y verás cómo los colores de la cámara cambian instantáneamente para reflejar esa condición.
+
+-----------------------------------------------------------------------
+
+6. CONFIGURAR TU PERFIL (ACCESIBILIDAD)
+
+HueX se adapta a ti.
+
+1. Ve a "Perfil" o "Ajustes" (icono de usuario o engranaje).
+2. Aquí puedes configurar:
+   - TIPO DE DALTOHNMISMO: Si tú tienes daltonismo, selecciona tu tipo aquí. Esto ayudará a la app a ajustar los colores para que los distingas mejor automáticamente.
+   - TAMAÑO DE TEXTO: ¿Las letras son muy pequeñas? Auméntalas aquí.
+   - MODO ALTO CONTRASTE: Actívalo si necesitas que los textos resalten más sobre el fondo.
+
+-----------------------------------------------------------------------
+
+7. PREGUNTAS FRECUENTES
+
+P: ¿Necesito internet para usar la app?
+R: Para iniciar sesión y guardar favoritos en la nube sí. El escáner básico puede funcionar sin internet, pero la base de datos de nombres de colores será limitada.
+
+P: La cámara no detecta bien el color.
+R: Asegúrate de tener buena iluminación. Las sombras o luces de colores muy fuertes cambian el color real del objeto. Usa luz blanca o natural si es posible.
+
+P: ¿Cómo borro un favorito?
+R: En la lista de Favoritos, mantén presionado el color que quieres borrar o deslízalo hacia la izquierda para ver la opción de "Eliminar" (icono de basura).

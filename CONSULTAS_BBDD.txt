@@ -1,0 +1,110 @@
+DOCUMENTO DE CONSULTAS SQL PARA HUEX MOBILE (CRUD COMPLETO)
+==========================================================
+
+Este documento contiene TODAS las consultas necesarias para que la aplicación sea 100% funcional. Cubre operaciones de Lectura (SELECT), Escritura (INSERT), Actualización (UPDATE) y Borrado (DELETE).
+
+-- ==========================================
+-- 1. AUTENTICACIÓN Y REGISTRO
+-- ==========================================
+
+-- A. Registrar un nuevo usuario
+-- "Crear una cuenta nueva para Ana con sus datos básicos"
+INSERT INTO USUARIO (ID_USUARIO, NOMBRE_COMPLETO, EMAIL, PASSWORD_HASH, FECHA_REGISTRO)
+VALUES (SEQ_USUARIO.NEXTVAL, 'Ana Garcia', 'ana@email.com', '$2b$10$HaShSeGuRo...', SYSDATE);
+
+-- B. Verificar credenciales (Login)
+-- "Buscar al usuario por email para comprobar su contraseña"
+SELECT ID_USUARIO, PASSWORD_HASH, NOMBRE_USUARIO, ESTADO_CUENTA
+FROM USUARIO
+WHERE EMAIL = 'ana@email.com';
+
+-- C. Registrar inicio de sesión exitoso (Crear sesión)
+-- "Guardar un token de sesión para que el móvil recuerde al usuario"
+INSERT INTO SESION_ACTIVA (ID_SESION, ID_USUARIO, TOKEN_REFRESH_HASH, DISPOSITIVO, DIRECCION_IP, FECHA_EXPIRACION)
+VALUES (SEQ_SESION.NEXTVAL, 10, 'hash_del_token...', 'Samsung S22', '192.168.1.5', SYSDATE + 30);
+
+-- D. Actualizar últimos accesos
+-- "Actualizar la fecha de último acceso del usuario"
+UPDATE USUARIO 
+SET ULTIMO_ACCESO = SYSDATE, INTENTOS_FALLIDOS = 0
+WHERE ID_USUARIO = 10;
+
+-- ==========================================
+-- 2. GESTIÓN DE PERFIL Y CONFIGURACIÓN
+-- ==========================================
+
+-- A. Obtener configuración visual (Al abrir la app)
+-- "Cargar si el usuario necesita filtros de Deuteranopia"
+SELECT T.NOMBRE_TECNICO, T.FILTRO_SVG_ID, P.USAR_MODO_ALTO_CONTRASTE
+FROM PERFIL_VISUAL_USUARIO P
+JOIN TIPO_DALTONISMO T ON P.ID_TIPO_DALTONISMO = T.ID_TIPO
+WHERE P.ID_USUARIO = 10;
+
+-- B. Actualizar perfil visual
+-- "El usuario cambió su configuración a Protanopia y letra grande"
+UPDATE PERFIL_VISUAL_USUARIO
+SET ID_TIPO_DALTONISMO = (SELECT ID_TIPO FROM TIPO_DALTONISMO WHERE NOMBRE_TECNICO = 'Protanopia'),
+    TAMAÑO_FUENTE_PREF = 18
+WHERE ID_USUARIO = 10;
+
+-- ==========================================
+-- 3. FUNCIONALIDAD PRINCIPAL: IDENTIFICACIÓN DE COLOR
+-- ==========================================
+
+-- A. Buscar nombre exacto (Match perfecto)
+-- "La cámara detectó RGB 0,0,0, ¿qué color es?"
+SELECT ID_COLOR, NOMBRE_COLOR, FAMILIA_COLOR
+FROM COLOR_CATALOGO
+WHERE CODIGO_RGB = '0,0,0';
+
+-- B. Búsqueda por aproximación (Para implementar en lógica de backend o procedure)
+-- Nota: En SQL puro estándar es complejo calcular distancia Euclideana eficientemente sin funcionas nativas,
+-- pero esta consulta devuelve candidatos cercanos en la componente Roja, por ejemplo.
+SELECT NOMBRE_COLOR, CODIGO_RGB
+FROM COLOR_CATALOGO
+WHERE CODIGO_RGB LIKE '255,%'; -- Ejemplo simplificado para colores muy rojos
+
+-- ==========================================
+-- 4. GESTIÓN DE FAVORITOS (CRUD)
+-- ==========================================
+
+-- A. Listar mis favoritos (Feed principal)
+-- "Mostrar todos los colores guardados ordenados por fecha"
+SELECT F.ID_FAVORITO, F.NOMBRE_PERSONALIZADO, F.CODIGO_HEX_ESCANEO, C.NOMBRE_COLOR
+FROM FAVORITO F
+LEFT JOIN COLOR_CATALOGO C ON F.ID_COLOR_DETECTADO = C.ID_COLOR
+WHERE F.ID_USUARIO = 10
+ORDER BY F.FECHA_GUARDADO DESC;
+
+-- B. Guardar un nuevo favorito (Escaneo)
+-- "El usuario quiere guardar el color Azul que acaba de escanear"
+INSERT INTO FAVORITO (ID_FAVORITO, ID_USUARIO, ID_COLOR_DETECTADO, CODIGO_HEX_ESCANEO, CODIGO_RGB_ESCANEO, NOMBRE_PERSONALIZADO, FECHA_GUARDADO)
+VALUES (SEQ_FAVORITO.NEXTVAL, 10, 505, '#0000FF', '0,0,255', 'Azul de mi camiseta', SYSDATE);
+
+-- C. Editar un favorito
+-- "Cambiar la nota o el nombre de un color guardado"
+UPDATE FAVORITO
+SET NOMBRE_PERSONALIZADO = 'Azul Favorito Camiseta',
+    ETIQUETA_LUGAR = 'Armario'
+WHERE ID_FAVORITO = 155 AND ID_USUARIO = 10;
+
+-- D. Eliminar un favorito
+-- "Borrar un color que ya no me interesa"
+DELETE FROM FAVORITO
+WHERE ID_FAVORITO = 155 AND ID_USUARIO = 10;
+
+-- ==========================================
+-- 5. SEGURIDAD ADICIONAL
+-- ==========================================
+
+-- A. Revocar sesiones (Cerrar sesión en todos lados)
+-- "Me robaron el móvil, invalida todas mis sesiones"
+UPDATE SESION_ACTIVA
+SET ES_VALIDO = 'N'
+WHERE ID_USUARIO = 10;
+
+-- B. Bloquear usuario por ataques
+-- "Bloquear cuenta tras 5 intentos fallidos"
+UPDATE USUARIO
+SET ESTADO_CUENTA = 'B'
+WHERE ID_USUARIO = 10 AND INTENTOS_FALLIDOS >= 5;
