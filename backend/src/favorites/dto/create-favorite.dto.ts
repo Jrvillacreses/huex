@@ -1,8 +1,22 @@
+import { IsString, IsOptional } from 'class-validator';
+
 export class CreateFavoriteDto {
+    @IsString()
     hex: string;
-    rgb?: string;
-    name?: string;
-    cmyk?: string;
-    lab?: string;
-    userId?: number;
+
+    @IsOptional()
+    @IsString()
+    name: string;
+
+    @IsOptional()
+    @IsString()
+    rgb: string;
+
+    @IsOptional()
+    @IsString()
+    cmyk: string;
+
+    @IsOptional()
+    @IsString()
+    lab: string;
 }

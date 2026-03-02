@@ -1,9 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, JoinColumn, UpdateDateColumn } from 'typeorm';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Favorite {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({ nullable: true })
+  userId: string;
+
+  @ManyToOne(() => User, user => user.favorites, { nullable: true })
+  @JoinColumn({ name: 'userId' })
+  user: User;
 
   @Column()
   hex: string;
@@ -22,4 +30,7 @@ export class Favorite {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

@@ -1,12 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, JoinColumn, UpdateDateColumn } from 'typeorm';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class History {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ default: 1 }) // Assuming simple single user for now or handled via auth later
-    userId: number;
+    @Column({ nullable: true })
+    userId: string;
+
+    @ManyToOne(() => User, user => user.history, { nullable: true })
+    @JoinColumn({ name: 'userId' })
+    user: User;
 
     @Column()
     hex: string;
@@ -25,4 +30,7 @@ export class History {
 
     @CreateDateColumn()
     createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
 }

@@ -11,17 +11,22 @@ export class HistoryService {
         private historyRepository: Repository<History>,
     ) { }
 
-    async create(createHistoryDto: CreateHistoryDto) {
+    async create(createHistoryDto: CreateHistoryDto, userId?: string) {
         // 1. Save the new record
-        const newRecord = this.historyRepository.create(createHistoryDto);
+        const newRecord = this.historyRepository.create({
+            ...createHistoryDto,
+            userId, // Associate with user if authenticated
+        });
         const saved = await this.historyRepository.save(newRecord);
 
-        // 2. Check total count
-        const count = await this.historyRepository.count();
+        // 2. Check total count for this user (or all if no user)
+        const where = userId ? { userId } : {};
+        const count = await this.historyRepository.count({ where });
 
-        // 3. If > 50, delete the oldest
+        // 3. If > 50, delete the oldest for this user
         if (count > 50) {
             const oldest = await this.historyRepository.find({
+                where,
                 order: { createdAt: 'ASC' },
                 take: count - 50, // Delete excess
             });
@@ -33,24 +38,35 @@ export class HistoryService {
         return saved;
     }
 
-    findAll() {
+    findAll(userId?: string) {
+        const where = userId ? { userId } : {};
         return this.historyRepository.find({
+            where,
             order: { createdAt: 'DESC' },
         });
     }
 
-    async findLatest() {
+    async findLatest(userId?: string) {
+        const where = userId ? { userId } : {};
         return this.historyRepository.find({
+            where,
             order: { createdAt: 'DESC' },
             take: 10
         });
     }
 
-    async remove(id: number) {
-        return this.historyRepository.delete(id);
+    async remove(id: number, userId?: string) {
+        const where: any = { id };
+        if (userId) {
+            where.userId = userId;
+        }
+        return this.historyRepository.delete(where);
     }
 
-    async clear() {
+    async clear(userId?: string) {
+        if (userId) {
+            return this.historyRepository.delete({ userId });
+        }
         return this.historyRepository.clear();
     }
 }

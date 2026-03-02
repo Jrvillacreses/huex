@@ -12,26 +12,46 @@ export class FavoritesService {
     private favoritesRepository: Repository<Favorite>,
   ) { }
 
-  create(createFavoriteDto: CreateFavoriteDto) {
-    const favorite = this.favoritesRepository.create(createFavoriteDto);
+  create(createFavoriteDto: CreateFavoriteDto, userId?: string) {
+    const favorite = this.favoritesRepository.create({
+      ...createFavoriteDto,
+      userId, // Associate with user if authenticated
+    });
     return this.favoritesRepository.save(favorite);
   }
 
-  findAll() {
+  findAll(userId?: string) {
+    // If userId provided, filter by user; otherwise return all (for offline mode)
+    const where = userId ? { userId } : {};
     return this.favoritesRepository.find({
+      where,
       order: { createdAt: 'DESC' }
     });
   }
 
-  findOne(id: number) {
-    return this.favoritesRepository.findOneBy({ id });
+  findOne(id: number, userId?: string) {
+    const where: any = { id };
+    if (userId) {
+      where.userId = userId;
+    }
+    return this.favoritesRepository.findOneBy(where);
   }
 
-  update(id: number, updateFavoriteDto: UpdateFavoriteDto) {
-    return this.favoritesRepository.update(id, updateFavoriteDto);
+  update(id: number, updateFavoriteDto: UpdateFavoriteDto, userId?: string) {
+    // Only update if belongs to user (when authenticated)
+    const where: any = { id };
+    if (userId) {
+      where.userId = userId;
+    }
+    return this.favoritesRepository.update(where, updateFavoriteDto);
   }
 
-  remove(id: number) {
-    return this.favoritesRepository.delete(id);
+  remove(id: number, userId?: string) {
+    // Only delete if belongs to user (when authenticated)
+    const where: any = { id };
+    if (userId) {
+      where.userId = userId;
+    }
+    return this.favoritesRepository.delete(where);
   }
 }

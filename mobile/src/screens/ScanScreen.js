@@ -5,11 +5,18 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { WebView } from 'react-native-webview';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { rgbToHex, getColorName, rgbToLab, rgbToCmyk } from '../utils/colorUtils';
-import { saveHistory, saveFavorite } from '../services/api';
+import localStorageService from '../services/localStorageService';
+import authService from '../services/authService';
+import syncService from '../services/syncService';
 import { useIsFocused } from '@react-navigation/native';
+import { useColorScheme } from 'nativewind';
 
 const ScanScreen = ({ navigation }) => {
     const isFocused = useIsFocused();
+    const { colorScheme } = useColorScheme();
+    const isDark = colorScheme === 'dark';
+    const iconColor = isDark ? '#EDF2F4' : '#2B2D42';
+    const mutedIconColor = '#8D99AE';
     const [permission, requestPermission] = useCameraPermissions();
     const cameraRef = useRef(null);
     const webViewRef = useRef(null);
@@ -48,14 +55,19 @@ const ScanScreen = ({ navigation }) => {
 
                 setScannedColor(resultColor);
 
-                // Save to history automatically
-                saveHistory({
+                // Save to local history automatically
+                localStorageService.addHistory({
                     hex: resultColor.hex,
                     rgb: resultColor.rgb,
                     name: resultColor.name,
                     cmyk: resultColor.cmyk,
                     lab: resultColor.lab,
-                    userId: 1
+                }).then(async () => {
+                    // Sync if authenticated
+                    const isAuth = await authService.isAuthenticated();
+                    if (isAuth) {
+                        syncService.sync().catch(err => console.log('Sync queued'));
+                    }
                 }).catch(err => console.log("History Save Error", err));
 
                 setHasScanned(true);
@@ -109,16 +121,26 @@ const ScanScreen = ({ navigation }) => {
         const colorToSave = scannedColor;
         if (!colorToSave) return;
         try {
-            await saveFavorite({
+            // Save locally
+            await localStorageService.addFavorite({
                 hex: colorToSave.hex,
                 rgb: colorToSave.rgb,
                 cmyk: colorToSave.cmyk,
                 lab: colorToSave.lab,
                 name: colorToSave.name,
-                userId: 1
             });
+
+            // Sync if authenticated
+            const isAuth = await authService.isAuthenticated();
+            if (isAuth) {
+                syncService.sync().catch(err => console.log('Sync queued'));
+            }
+
             Alert.alert("Guardado", "Añadido a favoritos");
-        } catch (error) { Alert.alert("Error", "No se pudo guardar"); }
+        } catch (error) {
+            console.error("Save Fav Error:", error);
+            Alert.alert("Error", "No se pudo guardar");
+        }
     };
 
     if (!permission) return <View />;
@@ -247,12 +269,12 @@ const ScanScreen = ({ navigation }) => {
                             {/* Actions */}
                             <View className="flex-row gap-3 mb-6">
                                 <TouchableOpacity onPress={() => Alert.alert("Info", `Color: ${detailsColor.name}`)} className="flex-1 bg-surface-light dark:bg-surface-dark py-3 rounded-xl items-center justify-center border border-gray-200 dark:border-gray-700">
-                                    <MaterialIcons name="volume-up" size={24} className="text-text-light dark:text-text-dark" />
+                                    <MaterialIcons name="volume-up" size={24} color={iconColor} />
                                     <Text className="text-[10px] text-text-muted-light mt-1">Audio</Text>
                                 </TouchableOpacity>
 
                                 <TouchableOpacity onPress={handleSaveFavorite} className="flex-1 bg-surface-light dark:bg-surface-dark py-3 rounded-xl items-center justify-center border border-gray-200 dark:border-gray-700">
-                                    <MaterialIcons name="bookmark" size={24} className="text-text-light dark:text-text-dark" />
+                                    <MaterialIcons name="bookmark" size={24} color={iconColor} />
                                     <Text className="text-[10px] text-text-muted-light mt-1">Guardar</Text>
                                 </TouchableOpacity>
 

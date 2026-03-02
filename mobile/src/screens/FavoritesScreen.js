@@ -1,24 +1,57 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Alert, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
-import { getFavorites, deleteFavorite } from '../services/api';
+import { useColorScheme } from 'nativewind';
+import localStorageService from '../services/localStorageService';
+import syncService from '../services/syncService';
+import authService from '../services/authService';
 
 const FavoritesScreen = ({ navigation }) => {
+    const { colorScheme } = useColorScheme();
+    const isDark = colorScheme === 'dark';
+    const iconColor = isDark ? '#EDF2F4' : '#2B2D42';
+    const mutedIconColor = '#8D99AE';
     const [favorites, setFavorites] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
 
     const loadFavorites = async () => {
         try {
             setLoading(true);
-            const data = await getFavorites();
+            // Load from local storage (works offline)
+            const data = await localStorageService.getFavorites();
             setFavorites(data);
         } catch (error) {
-            console.error(error);
+            console.error('Error loading favorites:', error);
             Alert.alert('Error', 'No se pudieron cargar los favoritos.');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleRefresh = async () => {
+        setRefreshing(true);
+        try {
+            // Check if authenticated
+            const isAuth = await authService.isAuthenticated();
+            if (isAuth) {
+                // Sync with server
+                await syncService.sync();
+                // Reload from local storage
+                const data = await localStorageService.getFavorites();
+                setFavorites(data);
+            } else {
+                // Just reload local data
+                await loadFavorites();
+            }
+        } catch (error) {
+            console.error('Sync error:', error);
+            // Still reload local data even if sync fails
+            await loadFavorites();
+        } finally {
+            setRefreshing(false);
         }
     };
 
@@ -28,7 +61,7 @@ const FavoritesScreen = ({ navigation }) => {
         }, [])
     );
 
-    const handleDelete = (id, name) => {
+    const handleDelete = async (id, name) => {
         Alert.alert(
             "Eliminar Favorito",
             `¿Quieres eliminar ${name}?`,
@@ -39,9 +72,24 @@ const FavoritesScreen = ({ navigation }) => {
                     style: "destructive",
                     onPress: async () => {
                         try {
-                            await deleteFavorite(id);
+                            // Delete from local storage
+                            await localStorageService.removeFavorite(id);
+
+                            // Add to sync queue if authenticated
+                            const isAuth = await authService.isAuthenticated();
+                            if (isAuth) {
+                                await localStorageService.addToSyncQueue({
+                                    type: 'DELETE_FAVORITE',
+                                    data: { id }
+                                });
+                                // Try to sync immediately
+                                syncService.sync().catch(err => console.log('Sync queued for later'));
+                            }
+
+                            // Reload favorites
                             loadFavorites();
                         } catch (e) {
+                            console.error('Delete error:', e);
                             Alert.alert("Error", "No se pudo eliminar");
                         }
                     }
@@ -55,7 +103,7 @@ const FavoritesScreen = ({ navigation }) => {
             {/* Top App Bar */}
             <View className="flex-row items-center justify-between p-4 border-b border-gray-200/50 dark:border-white/10">
                 <TouchableOpacity onPress={() => navigation.goBack()} className="w-10 h-10 items-center justify-center">
-                    <MaterialIcons name="arrow-back-ios" size={24} className="text-text-light dark:text-text-dark" />
+                    <MaterialIcons name="arrow-back-ios" size={24} color={iconColor} />
                 </TouchableOpacity>
                 <Text className="text-lg font-bold text-text-light dark:text-text-dark">Colores Favoritos</Text>
                 <View className="w-10" />
@@ -65,9 +113,15 @@ const FavoritesScreen = ({ navigation }) => {
             <View className="flex-1 px-4 pt-6 pb-24">
                 <FlatList
                     data={favorites}
-                    keyExtractor={(item) => item.id.toString()}
-                    refreshing={loading}
-                    onRefresh={loadFavorites}
+                    keyExtractor={(item) => item.id?.toString() || item.localId?.toString()}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={handleRefresh}
+                            colors={['#667eea']}
+                            tintColor="#667eea"
+                        />
+                    }
                     renderItem={({ item }) => (
                         <View className="flex-row items-center gap-2 bg-surface-light dark:bg-surface-dark/20 p-3 mb-3 rounded-lg shadow-sm">
                             {/* Clickable Area: Navigates to Detail */}
@@ -90,7 +144,7 @@ const FavoritesScreen = ({ navigation }) => {
                                     className="p-2"
                                     onPress={() => handleDelete(item.id, item.name)}
                                 >
-                                    <MaterialIcons name="close" size={24} className="text-text-muted-light dark:text-text-muted-dark" />
+                                    <MaterialIcons name="close" size={24} color={mutedIconColor} />
                                 </TouchableOpacity>
                             </View>
                         </View>

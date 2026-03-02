@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { styled, useColorScheme } from 'nativewind';
 import { useFocusEffect } from '@react-navigation/native';
-import { getHistory } from '../services/api';
+import localStorageService from '../services/localStorageService';
 
 const HomeScreen = ({ navigation }) => {
     const { colorScheme, toggleColorScheme } = useColorScheme();
@@ -12,7 +12,7 @@ const HomeScreen = ({ navigation }) => {
 
     const loadRecentHistory = async () => {
         try {
-            const history = await getHistory();
+            const history = await localStorageService.getHistory();
             // Get last 5 items
             setRecentHistory(history.slice(0, 5));
         } catch (error) {

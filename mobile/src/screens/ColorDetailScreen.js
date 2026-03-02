@@ -3,7 +3,9 @@ import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { rgbToHex, hexToRgb, rgbToCmyk, rgbToLab, rgbToHsl, hslToRgb, getColorName } from '../utils/colorUtils';
-import { saveFavorite } from '../services/api';
+import localStorageService from '../services/localStorageService';
+import authService from '../services/authService';
+import syncService from '../services/syncService';
 
 const ColorDetailScreen = ({ route, navigation }) => {
     const { color } = route.params;
@@ -57,17 +59,34 @@ const ColorDetailScreen = ({ route, navigation }) => {
 
     const handleSaveFavorite = async () => {
         try {
-            await saveFavorite({
+            // Save locally
+            await localStorageService.addFavorite({
                 hex: fullColor.hex,
                 rgb: fullColor.rgb,
                 cmyk: fullColor.cmyk,
                 lab: fullColor.lab,
                 name: fullColor.name,
-                userId: 1 // Hardcoded for now per context
             });
+
+            // Sync if authenticated
+            const isAuth = await authService.isAuthenticated();
+            if (isAuth) {
+                await localStorageService.addToSyncQueue({
+                    type: 'CREATE_FAVORITE',
+                    data: {
+                        hex: fullColor.hex,
+                        rgb: fullColor.rgb,
+                        cmyk: fullColor.cmyk,
+                        lab: fullColor.lab,
+                        name: fullColor.name,
+                    }
+                });
+                syncService.sync().catch(err => console.log('Sync queued'));
+            }
+
             Alert.alert("Éxito", "Color guardado en favoritos");
         } catch (error) {
-            console.error(error);
+            console.error("Save Fav Error:", error);
             Alert.alert("Error", "No se pudo guardar el favorito");
         }
     };

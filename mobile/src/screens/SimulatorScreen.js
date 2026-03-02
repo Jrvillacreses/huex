@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
+import { useColorScheme } from 'nativewind';
 import VisionFilter from '../components/VisionFilter';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -16,11 +17,16 @@ const SimulatorScreen = ({ navigation }) => {
     const [imageUri, setImageUri] = useState('https://lh3.googleusercontent.com/aida-public/AB6AXuDeb8qX6HbPloOSd4DRvOBLmDTlPaZvDsW8Ty_y6EPl87Llw9IbhLR93jcG35v7B1C9dOw506ckVRHfz4lP2I9yFSvbwJm_2m7B9pvhg-RZQYm0HpNhnXVw8_tbBpkXaPpAQPMIQJJ8O9ioXV3TP_cp62s1faoaL-2pz-QpCNh0mGP-pr6lLXVfyttNm-UnkFpMDLvZYSChx5s6N7U-XRrVA5tzgTjdi7HuYdfk0KlfMVvwtb2wnR4dvpMAby5VV1SZwbfFAoMQCiU'); // Default image
     const [capturedImage, setCapturedImage] = useState(null);
     const [permission, requestPermission] = useCameraPermissions();
-    const cameraRef = React.useRef(null);
+    const cameraRef = useRef(null);
+    const [isCapturing, setIsCapturing] = useState(false);
+
+    const { colorScheme } = useColorScheme();
+    const isDark = colorScheme === 'dark';
+    const iconColor = isDark ? '#EDF2F4' : '#2B2D42';
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            mediaTypes: 'images',
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
@@ -34,15 +40,17 @@ const SimulatorScreen = ({ navigation }) => {
     };
 
     const takePicture = async () => {
-        if (cameraRef.current) {
+        if (cameraRef.current && !isCapturing) {
+            setIsCapturing(true);
             try {
                 const photo = await cameraRef.current.takePictureAsync({
                     quality: 0.8,
-                    skipProcessing: true,
                 });
                 setCapturedImage(photo.uri);
             } catch (error) {
                 console.error("Capture failed:", error);
+            } finally {
+                setIsCapturing(false);
             }
         }
     };
@@ -54,11 +62,11 @@ const SimulatorScreen = ({ navigation }) => {
             {/* Header */}
             <View className="flex-row items-center justify-between px-4 h-14">
                 <TouchableOpacity onPress={() => navigation.goBack()} className="w-10 h-10 items-center justify-center">
-                    <MaterialIcons name="arrow-back-ios" size={24} className="text-text-light dark:text-text-dark" />
+                    <MaterialIcons name="arrow-back-ios" size={24} color={iconColor} />
                 </TouchableOpacity>
                 <Text className="text-lg font-bold text-text-light dark:text-text-dark">Simulador de Visión</Text>
                 <TouchableOpacity className="w-10 h-10 items-center justify-center">
-                    <MaterialIcons name="help-outline" size={24} className="text-text-light dark:text-text-dark" />
+                    <MaterialIcons name="help-outline" size={24} color={iconColor} />
                 </TouchableOpacity>
             </View>
 
@@ -88,16 +96,16 @@ const SimulatorScreen = ({ navigation }) => {
                             ) : (
                                 permission && permission.granted && isFocused ? (
                                     <>
-                                        <CameraView style={{ flex: 1 }} facing="back" ref={cameraRef}>
-                                            <View className="absolute bottom-6 self-center">
-                                                <TouchableOpacity
-                                                    onPress={takePicture}
-                                                    className="w-16 h-16 rounded-full border-4 border-white items-center justify-center"
-                                                >
-                                                    <View className="w-14 h-14 bg-primary rounded-full" />
-                                                </TouchableOpacity>
-                                            </View>
-                                        </CameraView>
+                                        <CameraView style={{ flex: 1 }} facing="back" ref={cameraRef} />
+                                        <View className="absolute bottom-6 self-center z-50">
+                                            <TouchableOpacity
+                                                onPress={takePicture}
+                                                disabled={isCapturing}
+                                                className={`w-16 h-16 rounded-full border-4 border-white items-center justify-center ${isCapturing ? 'opacity-50' : ''}`}
+                                            >
+                                                <View className={`w-14 h-14 rounded-full ${isCapturing ? 'bg-gray-400' : 'bg-primary'}`} />
+                                            </TouchableOpacity>
+                                        </View>
                                     </>
                                 ) : (
                                     <View className="flex-1 items-center justify-center">

@@ -1,34 +1,40 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
 import { CreateFavoriteDto } from './dto/create-favorite.dto';
 import { UpdateFavoriteDto } from './dto/update-favorite.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('favorites')
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) { }
 
   @Post()
-  create(@Body() createFavoriteDto: CreateFavoriteDto) {
-    return this.favoritesService.create(createFavoriteDto);
+  @UseGuards(JwtAuthGuard)
+  create(@Body() createFavoriteDto: CreateFavoriteDto, @Request() req) {
+    return this.favoritesService.create(createFavoriteDto, req.user?.userId);
   }
 
   @Get()
-  findAll() {
-    return this.favoritesService.findAll();
+  @UseGuards(JwtAuthGuard)
+  findAll(@Request() req) {
+    return this.favoritesService.findAll(req.user?.userId);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.favoritesService.findOne(+id);
+  @UseGuards(JwtAuthGuard)
+  findOne(@Param('id') id: string, @Request() req) {
+    return this.favoritesService.findOne(+id, req.user?.userId);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFavoriteDto: UpdateFavoriteDto) {
-    return this.favoritesService.update(+id, updateFavoriteDto);
+  @UseGuards(JwtAuthGuard)
+  update(@Param('id') id: string, @Body() updateFavoriteDto: UpdateFavoriteDto, @Request() req) {
+    return this.favoritesService.update(+id, updateFavoriteDto, req.user?.userId);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.favoritesService.remove(+id);
+  @UseGuards(JwtAuthGuard)
+  remove(@Param('id') id: string, @Request() req) {
+    return this.favoritesService.remove(+id, req.user?.userId);
   }
 }

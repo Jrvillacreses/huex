@@ -1,25 +1,52 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Alert, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
-import { getHistory, clearHistory, deleteHistoryItem, saveFavorite } from '../services/api';
+import { useColorScheme } from 'nativewind';
+import localStorageService from '../services/localStorageService';
+import syncService from '../services/syncService';
+import authService from '../services/authService';
 import { rgbToLab, rgbToCmyk } from '../utils/colorUtils';
 
 const HistoryScreen = ({ navigation }) => {
+    const { colorScheme } = useColorScheme();
+    const isDark = colorScheme === 'dark';
+    const iconColor = isDark ? '#EDF2F4' : '#2B2D42';
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
 
     const loadHistory = async () => {
         try {
             setLoading(true);
-            const data = await getHistory();
+            // Load from local storage (works offline)
+            const data = await localStorageService.getHistory();
             setHistory(data);
         } catch (error) {
-            console.error(error);
+            console.error('Error loading history:', error);
             Alert.alert('Error', 'No se pudo cargar el historial.');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleRefresh = async () => {
+        setRefreshing(true);
+        try {
+            const isAuth = await authService.isAuthenticated();
+            if (isAuth) {
+                await syncService.sync();
+                const data = await localStorageService.getHistory();
+                setHistory(data);
+            } else {
+                await loadHistory();
+            }
+        } catch (error) {
+            console.error('Sync error:', error);
+            await loadHistory();
+        } finally {
+            setRefreshing(false);
         }
     };
 
@@ -40,9 +67,22 @@ const HistoryScreen = ({ navigation }) => {
                     style: "destructive",
                     onPress: async () => {
                         try {
-                            await clearHistory();
+                            // Clear local storage
+                            await localStorageService.clearHistory();
+
+                            // Add to sync queue if authenticated
+                            const isAuth = await authService.isAuthenticated();
+                            if (isAuth) {
+                                await localStorageService.addToSyncQueue({
+                                    type: 'CLEAR_HISTORY',
+                                    data: {}
+                                });
+                                syncService.sync().catch(err => console.log('Sync queued'));
+                            }
+
                             loadHistory();
                         } catch (e) {
+                            console.error('Clear error:', e);
                             Alert.alert("Error", "No se pudo borrar el historial");
                         }
                     }
@@ -56,11 +96,14 @@ const HistoryScreen = ({ navigation }) => {
             {/* Top App Bar */}
             <View className="flex-row items-center justify-between p-4 border-b border-gray-200/50 dark:border-white/10">
                 <TouchableOpacity onPress={() => navigation.goBack()} className="w-10 h-10 items-center justify-center">
-                    <MaterialIcons name="arrow-back-ios" size={24} className="text-text-light dark:text-text-dark" />
+                    <MaterialIcons name="arrow-back-ios" size={24} color={iconColor} />
                 </TouchableOpacity>
                 <Text className="text-lg font-bold text-text-light dark:text-text-dark">Historial de Mediciones</Text>
-                <TouchableOpacity onPress={handleClearHistory} className="w-10 h-10 items-center justify-center">
-                    <MaterialIcons name="delete-outline" size={24} className="text-text-light dark:text-text-dark" />
+                <TouchableOpacity
+                    onPress={handleClearHistory}
+                    className="w-10 h-10 items-center justify-center"
+                >
+                    <MaterialIcons name="delete-sweep" size={24} color={iconColor} />
                 </TouchableOpacity>
             </View>
 
@@ -68,9 +111,15 @@ const HistoryScreen = ({ navigation }) => {
             <View className="flex-1 px-4 pt-6 pb-4">
                 <FlatList
                     data={history}
-                    keyExtractor={(item) => item.id.toString()}
-                    refreshing={loading}
-                    onRefresh={loadHistory}
+                    keyExtractor={(item) => item.id?.toString() || item.localId?.toString()}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={handleRefresh}
+                            colors={['#667eea']}
+                            tintColor="#667eea"
+                        />
+                    }
                     renderItem={({ item }) => (
                         <View className="flex-row items-center gap-2 bg-surface-light dark:bg-surface-dark/20 p-3 mb-3 rounded-lg shadow-sm">
                             {/* Color Preview */}
@@ -94,15 +143,10 @@ const HistoryScreen = ({ navigation }) => {
                                     className="p-2"
                                     onPress={async () => {
                                         try {
-                                            // Recalculate values if missing (backward compatibility)
+                                            // Recalculate values if missing
                                             let { hex, rgb, name, cmyk, lab } = item;
 
-                                            // Ensure we have RGB object from string if needed
-                                            // But for now, let's assume item.rgb is "r, g, b" string
-
                                             if (!cmyk || !lab) {
-                                                // We need to parse RGB to calculate others
-                                                // Assuming item.rgb is "255, 255, 255"
                                                 const [r, g, b] = item.rgb.split(',').map(n => parseInt(n.trim()));
 
                                                 if (!isNaN(r)) {
@@ -114,14 +158,21 @@ const HistoryScreen = ({ navigation }) => {
                                                 }
                                             }
 
-                                            await saveFavorite({
+                                            // Save to local storage
+                                            await localStorageService.addFavorite({
                                                 hex,
                                                 rgb,
                                                 name,
-                                                cmyk: cmyk || "0,0,0,100", // Fallback
-                                                lab: lab || "L:0 A:0 B:0", // Fallback
-                                                userId: 1
+                                                cmyk: cmyk || "0,0,0,100",
+                                                lab: lab || "L:0 A:0 B:0",
                                             });
+
+                                            // Sync if authenticated
+                                            const isAuth = await authService.isAuthenticated();
+                                            if (isAuth) {
+                                                syncService.sync().catch(err => console.log('Sync queued'));
+                                            }
+
                                             Alert.alert("Guardado", "Añadido a favoritos");
                                         } catch (e) {
                                             console.error("Save Fav Error:", e);
@@ -146,9 +197,25 @@ const HistoryScreen = ({ navigation }) => {
                                                     style: "destructive",
                                                     onPress: async () => {
                                                         try {
-                                                            await deleteHistoryItem(item.id);
+                                                            // Delete from local storage
+                                                            await localStorageService.getHistory().then(async (history) => {
+                                                                const filtered = history.filter(h => h.id !== item.id && h.localId !== item.id);
+                                                                await localStorageService.saveHistory(filtered);
+                                                            });
+
+                                                            // Add to sync queue if authenticated
+                                                            const isAuth = await authService.isAuthenticated();
+                                                            if (isAuth) {
+                                                                await localStorageService.addToSyncQueue({
+                                                                    type: 'DELETE_HISTORY',
+                                                                    data: { id: item.id }
+                                                                });
+                                                                syncService.sync().catch(err => console.log('Sync queued'));
+                                                            }
+
                                                             loadHistory();
                                                         } catch (e) {
+                                                            console.error('Delete error:', e);
                                                             Alert.alert("Error", "No se pudo borrar");
                                                         }
                                                     }
