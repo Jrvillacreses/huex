@@ -4,7 +4,7 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import { MaterialIcons } from '@expo/vector-icons';
 import { WebView } from 'react-native-webview';
 import * as ImageManipulator from 'expo-image-manipulator';
-import { rgbToHex, getColorName, rgbToLab, rgbToCmyk } from '../utils/colorUtils';
+import { rgbToHex, getColorName, rgbToLab, rgbToCmyk, getColorFamily } from '../utils/colorUtils';
 import localStorageService from '../services/localStorageService';
 import authService from '../services/authService';
 import syncService from '../services/syncService';
@@ -51,6 +51,7 @@ const ScanScreen = ({ navigation }) => {
                     cmyk: `${c}, ${m}, ${y}, ${k}`,
                     lab: labString,
                     name: getColorName(hex),
+                    colorFamily: getColorFamily(hex),
                 };
 
                 setScannedColor(resultColor);
@@ -261,7 +262,9 @@ const ScanScreen = ({ navigation }) => {
                             <View className="flex-row items-center gap-4 mb-6">
                                 <View style={{ backgroundColor: detailsColor.hex }} className="w-16 h-16 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm" />
                                 <View className="flex-1">
-                                    <Text className="text-2xl font-bold text-text-light dark:text-text-dark" numberOfLines={2}>{detailsColor.name}</Text>
+                                    <Text className="text-2xl font-bold text-text-light dark:text-text-dark" numberOfLines={2}>
+                                        {detailsColor.colorFamily ? `${detailsColor.colorFamily} · ${detailsColor.name}` : detailsColor.name}
+                                    </Text>
                                     <Text className="text-text-muted-light dark:text-text-muted-dark font-mono">{detailsColor.hex}</Text>
                                 </View>
                             </View>

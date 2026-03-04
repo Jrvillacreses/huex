@@ -425,3 +425,33 @@ export const getColorName = (hex) => {
 
     return closestColorName;
 };
+
+/**
+ * Returns the human-readable Spanish color family name for a given HEX color.
+ * Uses the same HSL mapping logic as the backend color-utils.ts so both platforms are consistent.
+ * @param {string} hex - Color in #RRGGBB format
+ * @returns {string} e.g. "Azul", "Verde", "Rojo"
+ */
+export const getColorFamily = (hex) => {
+    if (!hex || !hex.startsWith('#')) return 'Desconocido';
+
+    const rgb = hexToRgb(hex);
+    if (!rgb) return 'Desconocido';
+
+    // Convert RGB to HSL
+    const { h, s, l } = rgbToHsl(rgb.r, rgb.g, rgb.b);
+
+    if (l <= 8) return 'Negro';
+    if (l >= 92) return 'Blanco';
+    if (s <= 10) return 'Gris';
+
+    if (h >= 0 && h < 15) return 'Rojo';
+    if (h >= 15 && h < 45) return 'Naranja';
+    if (h >= 45 && h < 70) return 'Amarillo';
+    if (h >= 70 && h < 155) return 'Verde';
+    if (h >= 155 && h < 195) return 'Cian';
+    if (h >= 195 && h < 265) return 'Azul';
+    if (h >= 265 && h < 295) return 'Morado';
+    if (h >= 295 && h < 345) return 'Rosa';
+    return 'Rojo';
+};

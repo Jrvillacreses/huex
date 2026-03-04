@@ -22,7 +22,7 @@ export class AuthService {
         const user = await this.usersService.create(registerDto);
 
         // Generate tokens
-        const tokens = await this.generateTokens(user.id, user.email);
+        const tokens = await this.generateTokens(user.id, user.email, user.username);
 
         return {
             user: {
@@ -51,7 +51,7 @@ export class AuthService {
         }
 
         // Generate tokens
-        const tokens = await this.generateTokens(user.id, user.email);
+        const tokens = await this.generateTokens(user.id, user.email, user.username);
 
         return {
             user: {
@@ -76,11 +76,11 @@ export class AuthService {
             throw new UnauthorizedException('User not found');
         }
 
-        return this.generateTokens(user.id, user.email);
+        return this.generateTokens(user.id, user.email, user.username);
     }
 
-    private async generateTokens(userId: string, email: string) {
-        const payload = { sub: userId, email };
+    private async generateTokens(userId: string, email: string, username: string) {
+        const payload = { sub: userId, email, username };
 
         const [accessToken, refreshToken] = await Promise.all([
             this.jwtService.signAsync(payload, {

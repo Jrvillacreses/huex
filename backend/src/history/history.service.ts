@@ -3,6 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { History } from './entities/history.entity';
 import { CreateHistoryDto } from './dto/create-history.dto';
+import { getColorFamily } from '../shared/color-utils';
+
+const withFamily = (item: History) => ({ ...item, colorFamily: getColorFamily(item.hex) });
 
 @Injectable()
 export class HistoryService {
@@ -35,24 +38,26 @@ export class HistoryService {
             }
         }
 
-        return saved;
+        return withFamily(saved);
     }
 
-    findAll(userId?: string) {
+    async findAll(userId?: string) {
         const where = userId ? { userId } : {};
-        return this.historyRepository.find({
+        const results = await this.historyRepository.find({
             where,
             order: { createdAt: 'DESC' },
         });
+        return results.map(withFamily);
     }
 
     async findLatest(userId?: string) {
         const where = userId ? { userId } : {};
-        return this.historyRepository.find({
+        const results = await this.historyRepository.find({
             where,
             order: { createdAt: 'DESC' },
             take: 10
         });
+        return results.map(withFamily);
     }
 
     async remove(id: number, userId?: string) {

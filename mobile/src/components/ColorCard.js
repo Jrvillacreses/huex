@@ -9,7 +9,14 @@ const ColorCard = ({ color, onPress }) => {
         >
             <View style={{ backgroundColor: color.hex }} className="w-12 h-12 rounded-full border border-gray-200 mr-4" />
             <View className="flex-1">
-                <Text className="text-base font-bold text-text-light dark:text-text-dark">{color.name}</Text>
+                {color.colorFamily ? (
+                    <Text className="text-base font-bold text-text-light dark:text-text-dark">
+                        {color.colorFamily}{' '}
+                        <Text className="font-normal text-text-muted-light dark:text-text-muted-dark">· {color.name}</Text>
+                    </Text>
+                ) : (
+                    <Text className="text-base font-bold text-text-light dark:text-text-dark">{color.name}</Text>
+                )}
                 <Text className="text-sm text-text-muted-light dark:text-text-muted-dark">{color.hex}</Text>
             </View>
             <View>

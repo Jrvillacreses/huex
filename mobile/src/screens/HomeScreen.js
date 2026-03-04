@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { styled, useColorScheme } from 'nativewind';
 import { useFocusEffect } from '@react-navigation/native';
 import localStorageService from '../services/localStorageService';
+import { getColorFamily } from '../utils/colorUtils';
 
 const HomeScreen = ({ navigation }) => {
     const { colorScheme, toggleColorScheme } = useColorScheme();
@@ -93,7 +94,7 @@ const HomeScreen = ({ navigation }) => {
                                     <View style={{ backgroundColor: item.hex }} className="w-10 h-10 rounded-full border border-gray-200 mr-3" />
                                     <View className="flex-1">
                                         <Text className="text-base font-medium text-text-light dark:text-text-dark" numberOfLines={1}>
-                                            {item.name || "Color Desconocido"}
+                                            {(() => { const fam = item.colorFamily || getColorFamily(item.hex); return fam ? `${fam} · ${item.name || 'Color Desconocido'}` : (item.name || 'Color Desconocido'); })()}
                                         </Text>
                                         <Text className="text-xs text-text-muted-light dark:text-text-muted-dark">
                                             {item.hex.toUpperCase()} • {new Date(item.createdAt).toLocaleDateString()}

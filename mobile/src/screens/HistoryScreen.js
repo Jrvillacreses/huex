@@ -7,7 +7,7 @@ import { useColorScheme } from 'nativewind';
 import localStorageService from '../services/localStorageService';
 import syncService from '../services/syncService';
 import authService from '../services/authService';
-import { rgbToLab, rgbToCmyk } from '../utils/colorUtils';
+import { rgbToLab, rgbToCmyk, getColorFamily } from '../utils/colorUtils';
 
 const HistoryScreen = ({ navigation }) => {
     const { colorScheme } = useColorScheme();
@@ -129,7 +129,9 @@ const HistoryScreen = ({ navigation }) => {
                             >
                                 <View style={{ backgroundColor: item.hex }} className="w-12 h-12 rounded-full border border-gray-200" />
                                 <View className="flex-1 justify-center">
-                                    <Text className="text-base font-medium text-text-light dark:text-text-dark" numberOfLines={1}>{item.name || "Color Desconocido"}</Text>
+                                    <Text className="text-base font-medium text-text-light dark:text-text-dark" numberOfLines={1}>
+                                        {(() => { const fam = item.colorFamily || getColorFamily(item.hex); return fam ? `${fam} · ${item.name || 'Color Desconocido'}` : (item.name || 'Color Desconocido'); })()}
+                                    </Text>
                                     <Text className="text-sm text-text-muted-light dark:text-text-muted-dark">
                                         {item.hex.toUpperCase()} • {new Date(item.createdAt).toLocaleDateString()}
                                     </Text>

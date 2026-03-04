@@ -7,6 +7,8 @@ import { useColorScheme } from 'nativewind';
 import localStorageService from '../services/localStorageService';
 import syncService from '../services/syncService';
 import authService from '../services/authService';
+import { getColorFamily } from '../utils/colorUtils';
+
 
 const FavoritesScreen = ({ navigation }) => {
     const { colorScheme } = useColorScheme();
@@ -131,7 +133,9 @@ const FavoritesScreen = ({ navigation }) => {
                             >
                                 <View style={{ backgroundColor: item.hex }} className="w-12 h-12 rounded-full border border-gray-200" />
                                 <View className="flex-1 justify-center">
-                                    <Text className="text-base font-medium text-text-light dark:text-text-dark" numberOfLines={1}>{item.name || "Color Personalizado"}</Text>
+                                    <Text className="text-base font-medium text-text-light dark:text-text-dark" numberOfLines={1}>
+                                        {(() => { const fam = item.colorFamily || getColorFamily(item.hex); return fam ? `${fam} · ${item.name || 'Color Personalizado'}` : (item.name || 'Color Personalizado'); })()}
+                                    </Text>
                                     <Text className="text-sm text-text-muted-light dark:text-text-muted-dark font-mono">
                                         {item.hex.toUpperCase()} • {new Date(item.createdAt).toLocaleDateString()}
                                     </Text>

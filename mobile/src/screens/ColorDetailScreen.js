@@ -108,7 +108,9 @@ const ColorDetailScreen = ({ route, navigation }) => {
                     >
                         <MaterialIcons name="close" size={24} color="white" />
                     </TouchableOpacity>
-                    <Text className="text-white font-bold text-lg drop-shadow-md text-center max-w-[60%]" numberOfLines={1}>{fullColor.name}</Text>
+                    <Text className="text-white font-bold text-lg drop-shadow-md text-center max-w-[60%]" numberOfLines={1}>
+                        {fullColor.colorFamily ? `${fullColor.colorFamily} · ${fullColor.name}` : fullColor.name}
+                    </Text>
                     {/* Add to Favorites Button */}
                     <TouchableOpacity
                         onPress={handleSaveFavorite}
