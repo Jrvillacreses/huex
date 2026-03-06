@@ -3,11 +3,13 @@ import { View, Text, FlatList, TouchableOpacity, Alert, RefreshControl } from 'r
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
-import { useColorScheme } from 'nativewind';
+import { styled,  useColorScheme  } from 'nativewind';
 import localStorageService from '../services/localStorageService';
 import syncService from '../services/syncService';
 import authService from '../services/authService';
 import { rgbToLab, rgbToCmyk, getColorFamily } from '../utils/colorUtils';
+
+const StyledSafeAreaView = styled(SafeAreaView);
 
 const HistoryScreen = ({ navigation }) => {
     const { colorScheme } = useColorScheme();
@@ -92,7 +94,7 @@ const HistoryScreen = ({ navigation }) => {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
+        <StyledSafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
             {/* Top App Bar */}
             <View className="flex-row items-center justify-between p-4 border-b border-gray-200/50 dark:border-white/10">
                 <TouchableOpacity onPress={() => navigation.goBack()} className="w-10 h-10 items-center justify-center">
@@ -242,7 +244,7 @@ const HistoryScreen = ({ navigation }) => {
                     }
                 />
             </View>
-        </SafeAreaView>
+        </StyledSafeAreaView>
     );
 };
 

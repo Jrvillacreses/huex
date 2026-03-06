@@ -7,6 +7,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import localStorageService from '../services/localStorageService';
 import { getColorFamily } from '../utils/colorUtils';
 
+const StyledSafeAreaView = styled(SafeAreaView);
+
 const HomeScreen = ({ navigation }) => {
     const { colorScheme, toggleColorScheme } = useColorScheme();
     const [recentHistory, setRecentHistory] = useState([]);
@@ -28,7 +30,7 @@ const HomeScreen = ({ navigation }) => {
     );
 
     return (
-        <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
+        <StyledSafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
             <ScrollView className="p-4">
                 {/* Header */}
                 <View className="flex-row justify-between items-center mb-6">
@@ -127,7 +129,7 @@ const HomeScreen = ({ navigation }) => {
                 </View>
 
             </ScrollView>
-        </SafeAreaView>
+        </StyledSafeAreaView>
     );
 };
 

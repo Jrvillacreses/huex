@@ -12,6 +12,18 @@
 
     <link rel="stylesheet" href="css/style.css">
 
+    <script>
+        // Critical: Apply theme before page renders to prevent flash
+        (function () {
+            const savedTheme = localStorage.getItem('huex-theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        })();
+    </script>
+
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -24,8 +36,9 @@
         /* Sidebar Styling */
         .sidebar {
             width: 250px;
-            background: rgba(15, 23, 42, 0.95);
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            background: var(--bg-panel);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid var(--card-border);
             padding: 2rem 1rem;
             display: flex;
             flex-direction: column;
@@ -37,7 +50,7 @@
         .sidebar-brand {
             font-size: 1.5rem;
             font-weight: 800;
-            background: linear-gradient(to right, #a78bfa, #ec4899);
+            background: linear-gradient(to right, #EF233C, #D90429);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -61,19 +74,19 @@
         }
 
         .nav-item:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--glass-bg);
             color: var(--text-main);
         }
 
         .nav-item.active {
-            background: rgba(139, 92, 246, 0.2);
-            color: var(--text-main);
+            background: rgba(239, 35, 60, 0.1);
+            color: var(--primary-color);
             border-left: 3px solid var(--primary-color);
         }
 
         .sidebar-footer {
             margin-top: auto;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid var(--card-border);
             padding-top: 1rem;
         }
 
@@ -91,7 +104,7 @@
             align-items: center;
             margin-bottom: 2rem;
             padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--card-border);
         }
 
         .user-greeting {
@@ -219,8 +232,9 @@
         }
 
         .modal-content {
-            background: rgba(15, 23, 42, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: var(--bg-panel);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
             border-radius: var(--radius-lg);
             padding: 3rem;
             width: 90%;
@@ -229,7 +243,7 @@
             position: relative;
             transform: scale(0.9);
             transition: transform 0.3s ease;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: var(--glass-shadow);
         }
 
         .color-modal.active .modal-content {
@@ -247,7 +261,7 @@
         }
 
         .modal-close:hover {
-            color: white;
+            color: var(--text-main);
         }
 
         .modal-swatch {
@@ -396,6 +410,13 @@
             </nav>
 
             <div class="sidebar-footer">
+                <a href="#" class="nav-item" id="theme-toggle">
+                    <span id="theme-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px;">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+                        </svg></span> <span id="theme-text">Modo Oscuro</span>
+                </a>
                 <a href="#" class="nav-item" id="logout-btn" style="color: #ef4444;">
                     <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" style="width: 20px; height: 20px;">
@@ -475,9 +496,9 @@
 
                 <!-- Profile Hero -->
                 <div
-                    style="display: flex; align-items: center; gap: 2rem; background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(139, 92, 246, 0.05)); border: 1px solid rgba(124, 58, 237, 0.25); border-radius: var(--radius-md); padding: 2rem; margin-bottom: 2rem;">
+                    style="display: flex; align-items: center; gap: 2rem; background: rgba(239, 35, 60, 0.05); border: 1px solid rgba(239, 35, 60, 0.2); border-radius: var(--radius-md); padding: 2rem; margin-bottom: 2rem;">
                     <div id="profile-avatar"
-                        style="width: 80px; height: 80px; min-width: 80px; border-radius: 50%; background: linear-gradient(135deg, #7c3aed, #8b5cf6); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 700; color: white; text-transform: uppercase; box-shadow: 0 0 0 4px rgba(124,58,237,0.3);">
+                        style="width: 80px; height: 80px; min-width: 80px; border-radius: 50%; background: linear-gradient(135deg, #EF233C, #D90429); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 700; color: white; text-transform: uppercase; box-shadow: 0 0 0 4px rgba(239,35,60,0.2);">
                         ?</div>
                     <div>
                         <div id="profile-name" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">-
@@ -501,7 +522,7 @@
                     style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
                     <div class="analytics-card" style="text-align: center; padding: 1.5rem;">
                         <div id="stat-total-scans"
-                            style="font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, #7c3aed, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                            style="font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, #EF233C, #D90429); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
                             -</div>
                         <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">Colores
                             Escaneados</div>
@@ -581,6 +602,7 @@
 
     <!-- Scripts -->
     <script src="js/api.js"></script>
+    <script src="js/theme.js"></script>
     <script src="js/dashboard.js"></script>
 </body>
 

@@ -13,9 +13,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useColorScheme } from 'nativewind';
+import { styled,  useColorScheme  } from 'nativewind';
 import authService from '../services/authService';
 import syncService from '../services/syncService';
+
+const StyledSafeAreaView = styled(SafeAreaView);
 
 const { width } = Dimensions.get('window');
 
@@ -70,7 +72,7 @@ export default function LoginScreen({ navigation }) {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
+        <StyledSafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 className="flex-1"
@@ -223,6 +225,6 @@ export default function LoginScreen({ navigation }) {
                     </View>
                 </View>
             </KeyboardAvoidingView>
-        </SafeAreaView>
+        </StyledSafeAreaView>
     );
 }

@@ -66,6 +66,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         api.logout();
     });
 
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        // Initial UI update
+        themeManager.updateUI(localStorage.getItem('huex-theme') || 'light');
+
+        themeToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            themeManager.toggle();
+        });
+    }
+
     // 3. Initial Load (Profile + Default Tab)
     try {
         const [profile, historyData, favoritesData] = await Promise.all([
@@ -272,8 +284,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 datasets: [{
                     label: 'Escaneos',
                     data: counts,
-                    backgroundColor: 'rgba(167, 139, 250, 0.7)',
-                    borderColor: '#a78bfa',
+                    backgroundColor: 'rgba(239, 35, 60, 0.7)',
+                    borderColor: '#EF233C',
                     borderWidth: 1,
                     borderRadius: 4
                 }]

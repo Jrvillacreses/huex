@@ -12,8 +12,10 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useColorScheme } from 'nativewind';
+import { styled,  useColorScheme  } from 'nativewind';
 import authService from '../services/authService';
+
+const StyledSafeAreaView = styled(SafeAreaView);
 
 export default function RegisterScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
@@ -101,7 +103,7 @@ export default function RegisterScreen({ navigation }) {
     );
 
     return (
-        <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
+        <StyledSafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 className="flex-1"
@@ -203,6 +205,6 @@ export default function RegisterScreen({ navigation }) {
                     </View>
                 </ScrollView>
             </KeyboardAvoidingView>
-        </SafeAreaView>
+        </StyledSafeAreaView>
     );
 }

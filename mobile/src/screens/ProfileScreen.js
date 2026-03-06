@@ -9,8 +9,10 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useColorScheme } from 'nativewind';
+import { styled,  useColorScheme  } from 'nativewind';
 import authService from '../services/authService';
+
+const StyledSafeAreaView = styled(SafeAreaView);
 
 export default function ProfileScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
@@ -51,15 +53,15 @@ export default function ProfileScreen({ navigation }) {
 
     if (loading) {
         return (
-            <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark items-center justify-center">
+            <StyledSafeAreaView className="flex-1 bg-background-light dark:bg-background-dark items-center justify-center">
                 <ActivityIndicator size="large" color="#EF233C" />
-            </SafeAreaView>
+            </StyledSafeAreaView>
         );
     }
 
     if (!user) {
         return (
-            <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark items-center justify-center px-6">
+            <StyledSafeAreaView className="flex-1 bg-background-light dark:bg-background-dark items-center justify-center px-6">
                 <View className="items-center">
                     <View
                         style={{
@@ -104,7 +106,7 @@ export default function ProfileScreen({ navigation }) {
                         <Text className="text-white text-base font-bold">Iniciar Sesión</Text>
                     </TouchableOpacity>
                 </View>
-            </SafeAreaView>
+            </StyledSafeAreaView>
         );
     }
 
@@ -124,7 +126,7 @@ export default function ProfileScreen({ navigation }) {
     );
 
     return (
-        <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
+        <StyledSafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
             <ScrollView className="flex-1" contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}>
                 {/* --- Header Section --- */}
                 <View className="items-center mt-6 mb-8">
@@ -225,6 +227,6 @@ export default function ProfileScreen({ navigation }) {
                     </Text>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </StyledSafeAreaView>
     );
 }

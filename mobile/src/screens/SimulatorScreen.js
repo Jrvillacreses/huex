@@ -4,9 +4,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
-import { useColorScheme } from 'nativewind';
+import { styled,  useColorScheme  } from 'nativewind';
 import VisionFilter from '../components/VisionFilter';
 import { useIsFocused } from '@react-navigation/native';
+
+const StyledSafeAreaView = styled(SafeAreaView);
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -58,7 +60,7 @@ const SimulatorScreen = ({ navigation }) => {
     const modes = ['Normal', 'Protanopia', 'Deuteranopia', 'Tritanopia'];
 
     return (
-        <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
+        <StyledSafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
             {/* Header */}
             <View className="flex-row items-center justify-between px-4 h-14">
                 <TouchableOpacity onPress={() => navigation.goBack()} className="w-10 h-10 items-center justify-center">
@@ -182,7 +184,7 @@ const SimulatorScreen = ({ navigation }) => {
                     </View>
                 </View>
             </View>
-        </SafeAreaView>
+        </StyledSafeAreaView>
     );
 };
 

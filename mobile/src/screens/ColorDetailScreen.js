@@ -1,11 +1,14 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { styled } from 'nativewind';
 import { MaterialIcons } from '@expo/vector-icons';
 import { rgbToHex, hexToRgb, rgbToCmyk, rgbToLab, rgbToHsl, hslToRgb, getColorName } from '../utils/colorUtils';
 import localStorageService from '../services/localStorageService';
 import authService from '../services/authService';
 import syncService from '../services/syncService';
+
+const StyledSafeAreaView = styled(SafeAreaView);
 
 const ColorDetailScreen = ({ route, navigation }) => {
     const { color } = route.params;
@@ -99,7 +102,7 @@ const ColorDetailScreen = ({ route, navigation }) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: fullColor.hex }}>
-            <SafeAreaView className="flex-1">
+            <StyledSafeAreaView className="flex-1">
                 {/* Header */}
                 <View className="flex-row justify-between items-center p-4">
                     <TouchableOpacity
@@ -175,7 +178,7 @@ const ColorDetailScreen = ({ route, navigation }) => {
                     <View className="h-10" />
 
                 </ScrollView>
-            </SafeAreaView>
+            </StyledSafeAreaView>
         </View>
     );
 };

@@ -12,6 +12,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/style.css">
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('huex-theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        })();
+    </script>
 
     <style>
         body {
@@ -33,7 +43,7 @@
         .logo {
             font-size: 2rem;
             font-weight: 800;
-            background: linear-gradient(to right, #a78bfa, #ec4899);
+            background: linear-gradient(to right, #EF233C, #D90429);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -75,7 +85,7 @@
         }
 
         .back-link:hover {
-            color: white;
+            color: var(--text-main);
         }
     </style>
 </head>
@@ -114,6 +124,7 @@
 
     <!-- Scripts -->
     <script src="js/api.js"></script>
+    <script src="js/theme.js"></script>
     <script src="js/auth.js"></script>
 </body>
 

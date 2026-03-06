@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { styled } from 'nativewind';
 import { MaterialIcons } from '@expo/vector-icons';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+
+const StyledSafeAreaView = styled(SafeAreaView);
 
 const MagnifierScreen = ({ navigation }) => {
     const [zoom, setZoom] = useState(0);
@@ -33,7 +36,7 @@ const MagnifierScreen = ({ navigation }) => {
                 zoom={zoom}
                 enableTorch={flashMode === 'on'}
             >
-                <SafeAreaView className="flex-1 justify-between">
+                <StyledSafeAreaView className="flex-1 justify-between">
                     {/* Header */}
                     <View className="flex-row justify-between p-4">
                         <TouchableOpacity
@@ -80,7 +83,7 @@ const MagnifierScreen = ({ navigation }) => {
                             <View className="w-[72px] h-[72px] bg-primary rounded-full" />
                         </TouchableOpacity>
                     </View>
-                </SafeAreaView>
+                </StyledSafeAreaView>
             </CameraView>
         </View>
     );
