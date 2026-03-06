@@ -15,6 +15,9 @@ import HistoryScreen from '../screens/HistoryScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import SettingsScreen from '../screens/SettingsScreen';
+import HelpCenterScreen from '../screens/HelpCenterScreen';
+import PrivacyScreen from '../screens/PrivacyScreen';
 
 import authService from '../services/authService';
 
@@ -119,6 +122,9 @@ export default function AppNavigator() {
                 <Stack.Screen name="Register" component={RegisterScreen} />
                 <Stack.Screen name="History" component={HistoryScreen} />
                 <Stack.Screen name="Favorites" component={FavoritesScreen} />
+                <Stack.Screen name="Settings" component={SettingsScreen} />
+                <Stack.Screen name="HelpCenter" component={HelpCenterScreen} />
+                <Stack.Screen name="Privacy" component={PrivacyScreen} />
                 <Stack.Screen name="ColorDetail" component={ColorDetailScreen} options={{ presentation: 'modal' }} />
             </Stack.Navigator>
         </NavigationContainer>

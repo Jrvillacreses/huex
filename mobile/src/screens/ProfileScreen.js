@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
-import { styled,  useColorScheme  } from 'nativewind';
+import { styled, useColorScheme } from 'nativewind';
 import authService from '../services/authService';
 
 const StyledSafeAreaView = styled(SafeAreaView);
@@ -194,19 +194,7 @@ export default function ProfileScreen({ navigation }) {
                     <MenuButton
                         icon="settings"
                         label="Configuración"
-                        onPress={() => Alert.alert("Próximamente", "Ajustes de la aplicación")}
-                    />
-
-                    <MenuButton
-                        icon="help-outline"
-                        label="Centro de Ayuda"
-                        onPress={() => Alert.alert("Próximamente", "Tutoriales y FAQ")}
-                    />
-
-                    <MenuButton
-                        icon="policy"
-                        label="Privacidad y Términos"
-                        onPress={() => Alert.alert("Privacidad", "Normalización de Color HueX")}
+                        onPress={() => navigation.navigate('Settings')}
                     />
                 </View>
 

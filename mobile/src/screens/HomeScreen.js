@@ -38,7 +38,7 @@ const HomeScreen = ({ navigation }) => {
                     <Text className="text-lg font-bold text-text-light dark:text-text-dark font-display">
                         Inicio
                     </Text>
-                    <TouchableOpacity className="w-12 items-end">
+                    <TouchableOpacity className="w-12 items-end" onPress={() => navigation.navigate('Settings')}>
                         <MaterialIcons name="settings" size={24} color={colorScheme === 'dark' ? '#EDF2F4' : '#2B2D42'} />
                     </TouchableOpacity>
                 </View>
@@ -113,19 +113,6 @@ const HomeScreen = ({ navigation }) => {
                             </Text>
                         </View>
                     )}
-                </View>
-
-                {/* Theme Toggle */}
-                <View className="flex-row items-center justify-between bg-surface-light dark:bg-surface-dark/20 p-4 rounded-xl shadow-sm mb-6">
-                    <View className="flex-row items-center gap-4">
-                        <View className="w-10 h-10 rounded-full bg-background-light dark:bg-background-dark items-center justify-center">
-                            <MaterialIcons name="brightness-6" size={24} color={colorScheme === 'dark' ? '#EDF2F4' : '#2B2D42'} />
-                        </View>
-                        <Text className="text-base text-text-light dark:text-text-dark">Modo Oscuro</Text>
-                    </View>
-                    <TouchableOpacity onPress={toggleColorScheme}>
-                        <MaterialIcons name={colorScheme === 'dark' ? "toggle-on" : "toggle-off"} size={40} color={colorScheme === 'dark' ? '#EF233C' : '#8D99AE'} />
-                    </TouchableOpacity>
                 </View>
 
             </ScrollView>
