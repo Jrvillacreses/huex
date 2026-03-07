@@ -78,7 +78,7 @@ const SimulatorScreen = ({ navigation }) => {
                     {source === 'camera' ? (
                         <View className="w-full h-3/4 rounded-xl overflow-hidden bg-black relative">
                             {capturedImage ? (
-                                <>
+                                <View className="flex-1 w-full items-center justify-center">
                                     <VisionFilter
                                         mode={mode}
                                         imageUri={capturedImage}
@@ -87,14 +87,14 @@ const SimulatorScreen = ({ navigation }) => {
                                     />
                                     <TouchableOpacity
                                         onPress={() => setCapturedImage(null)}
-                                        className="absolute bottom-4 right-4 bg-black/60 p-3 rounded-full"
+                                        className="absolute bottom-4 right-4 bg-black/60 p-3 rounded-full z-10"
                                     >
                                         <MaterialIcons name="refresh" size={24} color="white" />
                                     </TouchableOpacity>
-                                    <View className="absolute top-4 right-4 bg-black/50 px-3 py-1 rounded-full pointer-events-none">
+                                    <View className="absolute top-4 right-4 bg-black/50 px-3 py-1 rounded-full pointer-events-none z-10">
                                         <Text className="text-white font-bold">{mode}</Text>
                                     </View>
-                                </>
+                                </View>
                             ) : (
                                 permission && permission.granted && isFocused ? (
                                     <>

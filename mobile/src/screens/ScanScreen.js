@@ -208,9 +208,9 @@ const ScanScreen = ({ navigation }) => {
                             </View>
 
                             {/* CONTROLS */}
-                            <View className="absolute bottom-12 w-full items-center z-50 gap-6">
+                            <View style={{ position: 'absolute', bottom: 48, left: 0, right: 0, alignItems: 'center', zIndex: 50, gap: 24 }}>
                                 {/* Zoom Controls */}
-                                <View className="w-[90%] bg-black/40 p-2 rounded-xl backdrop-blur-sm flex-row items-center justify-between gap-4">
+                                <View style={{ width: '90%' }} className="bg-black/40 p-2 rounded-xl backdrop-blur-sm flex-row items-center justify-between gap-4">
                                     <TouchableOpacity
                                         onPress={() => setZoom(Math.max(0, zoom - 0.1))}
                                         className="w-10 h-10 items-center justify-center bg-white/20 rounded-full"
@@ -246,7 +246,7 @@ const ScanScreen = ({ navigation }) => {
                                     </View>
                                 </TouchableOpacity>
 
-                                <Text className="text-white/80 font-medium text-sm bg-black/20 px-4 py-1 rounded-full backdrop-blur-md">
+                                <Text className="text-white/80 font-medium text-sm bg-black/20 px-4 py-1 rounded-full backdrop-blur-md text-center">
                                     Apunte y presione para escanear
                                 </Text>
                             </View>
