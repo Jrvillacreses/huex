@@ -271,14 +271,14 @@ const ScanScreen = ({ navigation }) => {
 
                             {/* Actions */}
                             <View className="flex-row gap-3 mb-6">
-                                <TouchableOpacity onPress={() => Alert.alert("Info", `Color: ${detailsColor.name}`)} className="flex-1 bg-surface-light dark:bg-surface-dark py-3 rounded-xl items-center justify-center border border-gray-200 dark:border-gray-700">
-                                    <MaterialIcons name="volume-up" size={24} color={iconColor} />
-                                    <Text className="text-[10px] text-text-muted-light mt-1">Audio</Text>
+                                <TouchableOpacity onPress={() => navigation.navigate('ColorDetail', { color: detailsColor })} className="flex-1 bg-surface-light dark:bg-surface-dark py-3 rounded-xl items-center justify-center border border-gray-200 dark:border-gray-700">
+                                    <MaterialIcons name="info-outline" size={24} color={iconColor} />
+                                    <Text className="text-[10px] text-text-muted-light dark:text-text-muted-dark mt-1">Detalles</Text>
                                 </TouchableOpacity>
 
                                 <TouchableOpacity onPress={handleSaveFavorite} className="flex-1 bg-surface-light dark:bg-surface-dark py-3 rounded-xl items-center justify-center border border-gray-200 dark:border-gray-700">
                                     <MaterialIcons name="bookmark" size={24} color={iconColor} />
-                                    <Text className="text-[10px] text-text-muted-light mt-1">Guardar</Text>
+                                    <Text className="text-[10px] text-text-muted-light dark:text-text-muted-dark mt-1">Guardar</Text>
                                 </TouchableOpacity>
 
                                 {/* Reset */}

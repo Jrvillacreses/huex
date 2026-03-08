@@ -86,7 +86,7 @@ export default function SettingsScreen({ navigation }) {
                         label="Modo Oscuro"
                         type="toggle"
                         value={isDark}
-                        onPress={toggleColorScheme}
+                        onPress={() => setTimeout(() => toggleColorScheme(), 0)}
                         isLast={true}
                     />
                 </SettingsSection>
